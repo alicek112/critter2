@@ -7,7 +7,7 @@ repositories {
 
 dependencies {
     compile files('./src/main/resources/cetus.jar')
-    runtime 'org.antlr:antlr-runtime:3.5.2'
+    compile 'org.antlr:antlr-complete:3.5.2'
 }
 
 
