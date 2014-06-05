@@ -11,63 +11,48 @@
 
 package cetus.exec;
 
-import cetus.analysis.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+
 import cetus.base.grammars.CetusCParser;
-import cetus.codegen.CodeGenPass;
-import cetus.codegen.ompGen;
-import cetus.hir.Annotatable;
-import cetus.hir.Annotation;
 import cetus.hir.AnnotationDeclaration;
 import cetus.hir.AnnotationStatement;
-import cetus.hir.BreadthFirstIterator;
 import cetus.hir.Case;
 import cetus.hir.ClassDeclaration;
-import cetus.hir.CodeAnnotation;
-import cetus.hir.CommentAnnotation;
 import cetus.hir.CompoundStatement;
 import cetus.hir.DFIterator;
 import cetus.hir.Declaration;
-import cetus.hir.Declarator;
 import cetus.hir.Default;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.Enumeration;
-import cetus.hir.Expression;
 import cetus.hir.FlatIterator;
 import cetus.hir.FloatLiteral;
-import cetus.hir.ForLoop;
 import cetus.hir.GotoStatement;
 import cetus.hir.IDExpression;
 import cetus.hir.IfStatement;
-import cetus.hir.InlineAnnotation;
 import cetus.hir.IntegerLiteral;
-import cetus.hir.Literal;
 import cetus.hir.Loop;
-import cetus.hir.NestedDeclarator;
-import cetus.hir.PragmaAnnotation;
 import cetus.hir.PreAnnotation;
-import cetus.hir.PrintTools;
 import cetus.hir.Procedure;
-import cetus.hir.ProcedureDeclarator;
 import cetus.hir.Program;
-import cetus.hir.SimpleExpression;
 import cetus.hir.Statement;
-import cetus.hir.StatementExpression;
 import cetus.hir.SwitchStatement;
 import cetus.hir.SymbolTools;
 import cetus.hir.Tools;
 import cetus.hir.TranslationUnit;
 import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
-import cetus.hir.VariableDeclarator;
-import cetus.hir.WhileLoop;
-import cetus.transforms.*;
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Set;
+import cetus.transforms.AnnotationParser;
+import cetus.transforms.TransformPass;
 
 /**
 * Implements the command line parser and controls pass ordering.
@@ -77,22 +62,7 @@ import java.util.Set;
 * Derived classes have access to a protected {@link Program Program} 
 * object.
 */
-public class Critter {
-
-    /**
-    * A mapping from option names to option values.
-    */
-    protected static CommandLineOptionSet options = 
-    		new CommandLineOptionSet();
-
-    /**
-    * Override runPasses to do something with this object.
-    * It will contain a valid program when runPasses is called.
-    */
-    protected Program program;
-
-    /** The filenames supplied on the command line. */
-    protected List<String> filenames;
+public class Critter extends Driver {
     
     // COS217 maximum loop length
     private int MAX_LOOP_LENGTH = 35;
@@ -135,206 +105,6 @@ public class Critter {
     private String currentFilename;
 
     /**
-    * Constructor used by derived classes.
-    */
-    protected Critter() {
-    	Driver.registerOptions();
-        options.add(options.UTILITY, "parser",
-                "cetus.base.grammars.CetusCParser", "parsername",
-                "Name of parser to be used for parsing source file");
-        options.add(options.UTILITY, "outdir", "cetus_output", "dirname",
-                "Set the output directory name (default is cetus_output)");
-        options.add(options.UTILITY, "preprocessor", "cpp -C -I.", 
-        		"command",
-                "Set the preprocessor command to use");
-        options.add(options.UTILITY, "verbosity", "0", "N",
-                "Degree of status messages (0-4) that you wish to see " +
-                "(default is 0)");
-        options.add(options.UTILITY, "expand-user-header",
-                "Expand user (non-standard) header file #includes into " +
-                "code");
-        options.add(options.UTILITY, "expand-all-header", null,
-                "Expand all header file #includes into code");
-        Driver.setOptionValue("expand-all-header", null);
-    }
-
-    /**
-    * Returns the value of the given key or null * if the value is not 
-    * set.
-    * Key values are set on the command line as <b>-option_name=value</b>.
-    *
-    * @param key The key to search
-    * @return the value of the given key or null if the value is not set.
-    */
-    public static String getOptionValue(String key) {
-        return options.getValue(key);
-    }
-
-    /**
-    * Returns the set of  procedure names that should be excluded from
-    * transformations. These procedure names are specified with the
-    * skip-procedures command line option by providing a comma-separated list
-    * of names.
-    * @return set of procedure names that should be excluded from
-    *         transformations
-    */
-    public static HashSet getSkipProcedureSet() {
-        HashSet<String> proc_skip_set = new HashSet<String>();
-        String s = getOptionValue("skip-procedures");
-        if (s != null) {
-            String[] proc_names = s.split(",");
-            proc_skip_set.addAll(Arrays.asList(proc_names));
-        }
-        return proc_skip_set;
-    }
-
-    protected void parseOption(String opt) {
-        opt = opt.trim();
-        // empty line
-        if (opt.length() < 2) {
-            return;
-        }
-        int eq = opt.indexOf('=');
-        if (eq == -1) { // if value is not set
-            // registered option
-            if (options.contains(opt)) {
-                // no value on the option line, so set it to null
-                setOptionValue(opt, null);
-            } else {
-                System.err.println("ignoring unrecognized option " + opt);
-            }
-        } else { // if value is set
-            String option_name = opt.substring(0, eq);
-            if (options.contains(option_name)) {
-                if (option_name.equals("preprocessor")) {
-                    setOptionValue(option_name,
-                               opt.substring(eq + 1).replace("\"", ""));
-                } else {
-                    // use the value from the command line
-                    setOptionValue(option_name, opt.substring(eq + 1));
-                }
-            } else {
-                System.err.println("ignoring unrecognized option "
-                                   + option_name);
-            }
-        }
-    }
-
-    /**
-    * Parses command line options to Cetus.
-    *
-    * @param args The String array passed to main by the system.
-    */
-    protected void parseCommandLine(String[] args) {
-        /* print a useful message if there are no arguments */
-        if (args.length == 0) {
-            printUsage();
-            Tools.exit(1);
-        }
-        // keeps track of dangling preprocessor values
-        // e.g., args[n] = -preprocessor="cpp
-        //       args[n+1] = -EP"
-        boolean preprocessor = false;
-        int i; /* used after loop; don't put inside for loop */
-        for (i = 0; i < args.length; ++i) {
-            String opt = args[i];
-            // options start with "-"
-            if (opt.charAt(0) != '-') {
-                /* not an option -- skip to handling options and 
-                 * filenames */
-                break;
-            }
-            int eq = opt.indexOf('=');
-            if (eq == -1) { // if value is not set
-                String option_name = opt.substring(1);
-                if (options.contains(option_name)) { // registered option
-                    preprocessor = false;
-                    // no value on the command line, so just set it to "1"
-                    // setValue(name) will search for predefined value
-                    // --> see setValue(String) for more information.
-                    options.setValue(option_name);
-                } else if (preprocessor) {
-                    // found dangling preprocessor option
-                    setOptionValue("preprocessor",
-                                   getOptionValue("preprocessor")
-                                   + " " + opt.replace("\"",""));
-                } else {
-                    System.err.println("ignoring unrecognized option " +
-                                       option_name);
-                }
-            } else { // if value is set
-                String option_name = opt.substring(1, eq);
-                if (options.contains(option_name)) {
-                    if (option_name.equals("preprocessor")) {
-                        preprocessor = true;
-                        setOptionValue(option_name,
-                                  opt.substring(eq + 1).replace("\"",""));
-                    } else {
-                        preprocessor = false;
-                        // use the value from the command line
-                        setOptionValue(option_name, opt.substring(eq + 1));
-                    }
-                } else if (preprocessor) {
-                    setOptionValue("preprocessor",
-                                   getOptionValue("preprocessor")
-                                   + " " + opt.replace("\"",""));
-                } else {
-                    System.err.println("ignoring unrecognized option " +
-                                       option_name);
-                }
-            }
-            if (getOptionValue("help") != null ||
-                getOptionValue("usage") != null) {
-                printUsage();
-                Tools.exit(0);
-            }
-            if (getOptionValue("dump-options") != null) {
-                setOptionValue("dump-options", null);
-                dumpOptionsFile();
-                Tools.exit(0);
-            }
-            if (getOptionValue("dump-system-options") != null) {
-                setOptionValue("dump-system-options", null);
-                dumpSystemOptionsFile();
-                Tools.exit(0);
-            }
-            // load options file and then proceed with rest of command line
-            // options
-            if (getOptionValue("load-options") != null) {
-                // load options should not be set in options file
-                setOptionValue("load-options", null);
-                loadOptionsFile();
-                // prevent reentering this handler
-                setOptionValue("load-options", null);
-            }
-        }
-        // end of arguments without a file name
-        if (i >= args.length) {
-            System.err.println("No input files!");
-            Tools.exit(1);
-        }
-        // The purpose of this wildcard expansion is to ease the use of 
-        // IDE environment which usually doesn't handle wildcards.
-        int num_file_args = args.length-i;
-        filenames = new ArrayList<String>(num_file_args);
-        for (int j = 0; j < num_file_args; ++j, ++i) {
-            if (args[i].contains("*") || args[i].contains("?")) {
-                File parent =
-                        (new File(args[i])).getAbsoluteFile().getParentFile();
-                for (File file : parent.listFiles(new RegexFilter(args[i]))) {
-                    filenames.add(file.getAbsolutePath());
-                }
-            } else {
-                filenames.add(args[i]);
-            }
-        }
-        if (filenames.isEmpty()) {
-            System.err.println("No input files!");
-            Tools.exit(1);
-        }
-    }
-
-    /**
     * Parses all of the files listed in <var>filenames</var>
     * and creates a {@link Program Program} object.
     */
@@ -370,99 +140,6 @@ public class Critter {
         // Convert the IR to a new one with improved annotation support
         TransformPass.run(new AnnotationParser(program));
     }
-
-    /**
-    * Prints the list of options that Cetus accepts.
-    */
-    public void printUsage() {
-        String usage = "\ncetus.exec.Critter [option]... [file]...\n";
-        usage += options.getUsage();
-        System.err.println(usage);
-    }
-
-    /**
-    * dump default options to file options.cetus in working directory
-    * do not overwrite if file already exists.
-    */
-    public void dumpOptionsFile()  {
-        // check for options.cetus in working directory
-        // registerOptions();
-        File optionsFile = new File("options.cetus");
-        // create file options.cetus
-        try {
-            if (optionsFile.createNewFile()) {
-                // populate options.cetus
-                FileOutputStream fo = new FileOutputStream(optionsFile);
-                PrintStream ps = new PrintStream(fo);
-                ps.println(options.dumpOptions().trim());
-                ps.close();
-                fo.close();
-            }
-        } catch (IOException e) {
-            System.err.println("Error: Failed to dump options.cetus");
-        }
-    }
-
-    public void dumpSystemOptionsFile()  {
-        // check for options.cetus in working directory
-        // registerOptions();
-        String homePath = System.getProperty("user.home");
-        File optionsFile = new File(homePath,"options.cetus");
-        // create file options.cetus
-        try {
-            if (optionsFile.createNewFile()) {
-                // populate options.cetus
-                FileOutputStream fo = new FileOutputStream(optionsFile);
-                PrintStream ps = new PrintStream(fo);
-                ps.println(options.dumpOptions().trim());
-                ps.close();
-                fo.close();
-            }
-        } catch (IOException e) {
-            System.err.println(
-                    "Error: Failed to dump system wide options.cetus");
-        }
-    }
-
-    /**
-    * load options.cetus
-    * search order is working directory and then home directory
-    */
-    public void loadOptionsFile() {
-        // check working directory for options.cetus
-        // check home directory for options.cetus
-        File optionsFile = new File("options.cetus");
-        //dumpOptionsFile();
-        if (!optionsFile.exists()) {
-            String homePath = System.getProperty("user.home");
-            optionsFile = new File(homePath,"options.cetus");
-        }
-        if (!optionsFile.exists()) {
-            System.err.println("Error: Failed to load options.cetus");
-            System.err.println(
-                "Use option -dump-options or -dump-system-options"
-                + " to create options.cetus with default values");
-            Tools.exit(1);
-        }
-        // load file contents
-        try {
-            FileReader fr = new FileReader(optionsFile);
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-            // Read lines
-            while ((line=br.readLine()) != null) {
-                // Remove comments
-                if (line.startsWith("#"))
-                    continue;
-                // load option
-                parseOption(line);
-            }
-        } catch (Exception e) {
-            System.err.println("Error while loading options file");
-            Tools.exit(1);
-        }
-    }
-
     
     private long getLineNumber(Traversable element)
     {
@@ -589,7 +266,6 @@ public class Critter {
 	    			}
 	    		}
 			}
-    		
     	}
     }
     
@@ -1652,29 +1328,4 @@ public class Critter {
         System.err.println("critTer2 warnings end here");
         
     }
-
-    /**
-    * Implementation of file filter for handling wild card character and other
-    * special characters to generate regular expressions out of a string.
-    */
-    private static class RegexFilter implements FileFilter {
-        /** Regular expression */
-        private String regex;
-
-        /**
-        * Constructs a new filter with the given input string
-        * @param str String to construct regular expression out of
-        */
-        public RegexFilter(String str) {
-            regex = str.replaceAll("\\.", "\\\\.") // . => \.
-            .replaceAll("\\?", ".")                // ? => .
-            .replaceAll("\\*", ".*");              // * => .*
-        }
-
-        @Override
-        public boolean accept(File f) {
-            return f.getName().matches(regex);
-        }
-    }
-
 }
