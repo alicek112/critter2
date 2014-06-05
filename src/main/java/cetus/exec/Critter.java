@@ -99,7 +99,22 @@ public class Critter {
     
 
     public Critter(Program program) {
-    	this.program = program;
+    	/*
+    	Program program = new Program();
+        CommandLineOptionSet options = new CommandLineOptionSet();
+        options.add(options.UTILITY,
+                "preprocessor",
+                "gcc -E -C -dD",
+                "command",
+                "Set the preprocessor command to use");
+        
+        String dir = (new File(filename)).getParent();
+        CetusParser cparser = new CetusCParser(dir);
+        TranslationUnit tu = cparser.parseFile(filename, options);
+        program.addTranslationUnit(tu);
+        
+        */
+        this.program = program;
     }
     
     private long getLineNumber(Traversable element)
@@ -1246,10 +1261,9 @@ public class Critter {
     */
     public static void main(String[] args) {
     	FixedDriver fd = new FixedDriver();
-        fd.parseCommandLine(args);
-        fd.parseFiles();
-        
-        Critter dt = new Critter(fd.getProgram());
+    	fd.parseProgram("/Users/alicek112/IW/pragma_hello.c");
+    	
+    	Critter dt = new Critter(fd.parseProgram("/Users/alicek112/IW/pragma_hello.c"));
         
         System.err.println("critTer2 warnings start here");
         System.err.println("----------------------------");
@@ -1289,27 +1303,32 @@ class FixedDriver extends Driver {
 		return program;
 	}
 	
+	protected Program parseProgram(String filename) {
+        Program program = new Program();
+        CommandLineOptionSet options = new CommandLineOptionSet();
+        options.add(options.UTILITY,
+                "preprocessor",
+                "gcc -E -C -dD",
+                "command",
+                "Set the preprocessor command to use");
+        
+        String dir = (new File(filename)).getParent();
+        CetusParser cparser = new CetusCParser(dir);
+        TranslationUnit tu = cparser.parseFile(filename, options);
+        program.addTranslationUnit(tu);
+        
+        
+        return program;
+        
+    }
+	
 	protected void parseFiles() {
         program = new Program();
-        Class class_parser;
-        try {
-            class_parser = getClass().getClassLoader().loadClass(
-                           getOptionValue("parser"));
-            //CetusParser cparser =
-             //       (CetusParser)class_parser.getConstructor().newInstance();
-            String dir = (new File(filenames.get(0))).getParent();
-            CetusParser cparser = new CetusCParser(dir);
-            for (String file : filenames) {
-            	TranslationUnit tu = cparser.parseFile(file, options);
-                program.addTranslationUnit(tu);
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Failed to load parser: " +
-                               getOptionValue("parser"));
-            Tools.exit(1);
-        } catch(Exception e) {
-            System.err.println("Failed to initialize parser");
-            Tools.exit(1);
+        String dir = (new File(filenames.get(0))).getParent();
+        CetusParser cparser = new CetusCParser(dir);
+        for (String file : filenames) {
+        	TranslationUnit tu = cparser.parseFile(file, options);
+            program.addTranslationUnit(tu);
         }
         
     }
