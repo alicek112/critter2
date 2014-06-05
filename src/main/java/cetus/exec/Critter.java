@@ -11,16 +11,9 @@
 
 package cetus.exec;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 import cetus.base.grammars.CetusCParser;
@@ -62,8 +55,10 @@ import cetus.transforms.TransformPass;
 * Derived classes have access to a protected {@link Program Program} 
 * object.
 */
-public class Critter extends Driver {
+public class Critter {
     
+	private final Program program;
+	
     // COS217 maximum loop length
     private int MAX_LOOP_LENGTH = 35;
     // COS217 maximum function length
@@ -102,43 +97,9 @@ public class Critter extends Driver {
     // COS217 minimum variable name length
     private int MIN_VAR_NAME_LENGTH = 3;
     
-    private String currentFilename;
 
-    /**
-    * Parses all of the files listed in <var>filenames</var>
-    * and creates a {@link Program Program} object.
-    */
-    @SuppressWarnings({"unchecked", "cast"})
-    protected void parseFiles() {
-        program = new Program();
-        Class class_parser;
-        try {
-            class_parser = getClass().getClassLoader().loadClass(
-                           getOptionValue("parser"));
-            //CetusParser cparser =
-             //       (CetusParser)class_parser.getConstructor().newInstance();
-            String dir = (new File(filenames.get(0))).getParent();
-            CetusParser cparser = new CetusCParser(dir);
-            for (String file : filenames) {
-            	TranslationUnit tu = cparser.parseFile(file, options);
-                program.addTranslationUnit(tu);
-                String[] f = file.split("/");
-                currentFilename = f[f.length - 1];
-            }
-        } catch (ClassNotFoundException e) {
-            System.err.println("Failed to load parser: " +
-                               getOptionValue("parser"));
-            Tools.exit(1);
-        } catch(Exception e) {
-            System.err.println("Failed to initialize parser");
-            Tools.exit(1);
-        }
-        
-        // It is more natural to include these two steps in this method.
-        // Link IDExpression => Symbol object for faster future access.
-        SymbolTools.linkSymbol(program);
-        // Convert the IR to a new one with improved annotation support
-        TransformPass.run(new AnnotationParser(program));
+    public Critter(Program program) {
+    	this.program = program;
     }
     
     private long getLineNumber(Traversable element)
@@ -325,8 +286,12 @@ public class Critter extends Driver {
     			new DepthFirstIterator<Traversable>(program);
     	
 		int functioncount = 0;
+		String currentFilename = null;
     	while (dfs.hasNext()) {
     		Traversable t = dfs.next();
+    		
+    		if (currentFilename == null)
+    			currentFilename = getFilename(t);
     		
     		// skips all the included files
     		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
@@ -571,13 +536,13 @@ public class Critter extends Driver {
     	if (first.toString().startsWith("#pragma")) {
     		System.err.printf("\n%s: line %d: high priority: " +
     				"\nA file should begin with a comment.\n",
-					currentFilename, getLineNumber(first));
+					getFilename(first), getLineNumber(first));
     	}
     	
     	if (!(first instanceof AnnotationDeclaration)) {
     		System.err.printf("\n%s: line %d: high priority: " +
     				"\nA file should begin with a comment.\n",
-					currentFilename, getLineNumber(first));
+					getFilename(first), getLineNumber(first));
     	}
     	
     	dfs = new DepthFirstIterator<Traversable>(program);
@@ -705,6 +670,7 @@ public class Critter extends Driver {
     			new DepthFirstIterator<Traversable>(program);
     	
     	long linecount = 0;
+    	String currentFilename = null;
     	
     	while (dfs.hasNext()) {
     		Traversable t = dfs.next();
@@ -731,6 +697,7 @@ public class Critter extends Driver {
     				&& !t.toString().contains("Include")) {
     			String[] parts = t.toString().split(":");
     		    long currentline = Long.parseLong(parts[1]);
+    		    currentFilename = parts[2];
     		    if (currentline > linecount)
     		       	linecount = currentline;
     		}
@@ -1270,22 +1237,7 @@ public class Critter extends Driver {
     }
    
     
-    /**
-    * Sets the value of the option represented by <i>key</i> to
-    * <i>value</i>.
-    *
-    * @param key The option name.
-    * @param value The option value.
-    */
-    public static void setOptionValue(String key, String value) {
-        options.setValue(key, value);
-    }
-
-    public static boolean isIncluded(
-            String name, String hir_type, String hir_name) {
-        return options.isIncluded(name, hir_type, hir_name);
-    }
-
+   
     /**
     * Entry point for Cetus; creates a new Driver object,
     * and calls run on it with args.
@@ -1293,9 +1245,11 @@ public class Critter extends Driver {
     * @param args Command line options.
     */
     public static void main(String[] args) {
-    	Critter dt = new Critter();
-        dt.parseCommandLine(args);
-        dt.parseFiles();
+    	FixedDriver fd = new FixedDriver();
+        fd.parseCommandLine(args);
+        fd.parseFiles();
+        
+        Critter dt = new Critter(fd.getProgram());
         
         System.err.println("critTer2 warnings start here");
         System.err.println("----------------------------");
@@ -1326,6 +1280,37 @@ public class Critter extends Driver {
         System.err.println();
         System.err.println("----------------------------");
         System.err.println("critTer2 warnings end here");
+        
+    }
+}
+
+class FixedDriver extends Driver {
+	public Program getProgram() {
+		return program;
+	}
+	
+	protected void parseFiles() {
+        program = new Program();
+        Class class_parser;
+        try {
+            class_parser = getClass().getClassLoader().loadClass(
+                           getOptionValue("parser"));
+            //CetusParser cparser =
+             //       (CetusParser)class_parser.getConstructor().newInstance();
+            String dir = (new File(filenames.get(0))).getParent();
+            CetusParser cparser = new CetusCParser(dir);
+            for (String file : filenames) {
+            	TranslationUnit tu = cparser.parseFile(file, options);
+                program.addTranslationUnit(tu);
+            }
+        } catch (ClassNotFoundException e) {
+            System.err.println("Failed to load parser: " +
+                               getOptionValue("parser"));
+            Tools.exit(1);
+        } catch(Exception e) {
+            System.err.println("Failed to initialize parser");
+            Tools.exit(1);
+        }
         
     }
 }
