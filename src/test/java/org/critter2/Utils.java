@@ -31,6 +31,10 @@ public class Utils {
 		public void reportError(String message, Object... args) {
 			String test = String.format(message, args);
 			
+			if (model.compareTo(test) != 0) {
+				System.out.println("\"" + test.replace("\n", "\\n") + "\"");
+			}
+			
 			assertEquals(model, test);
 			
 		}

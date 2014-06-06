@@ -21,7 +21,7 @@ public class CheckLoop extends CritterCheck {
 	}
 
 	// COS217 maximum loop length
-    private int MAX_LOOP_LENGTH = 35;
+    private final int MAX_LOOP_LENGTH = 35;
 
 	@Override
 	public void check() {

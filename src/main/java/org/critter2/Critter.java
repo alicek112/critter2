@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.critter2.checks.CheckBeginningComment;
 import org.critter2.checks.CheckLoop;
 
 import cetus.base.grammars.CetusCParser;
@@ -1265,7 +1266,6 @@ public class Critter {
         System.err.println();
         
         // Checks begin here.
-        dt.checkBeginningComment();
         dt.checkFunctionCommentValid();
         dt.checkFunctionHasEnoughComments();
         dt.checkGlobalHasComment();
@@ -1286,7 +1286,8 @@ public class Critter {
         dt.checkAsserts();
         
         CritterCheck[] checks = {
-        		new CheckLoop(program)
+        		new CheckLoop(program),
+        		new CheckBeginningComment(program)
         };
         
         for (CritterCheck check : checks)
