@@ -51,12 +51,16 @@ def annotate(frompath, topath):
 
 def main():
 
-    if (len(sys.argv) == 1):
+    if len(sys.argv) == 1:
         print "No arguments given!"
         sys.exit(1)
+        
+    if len(sys.argv) > 2:
+    	print "CritTer takes only one c file."
+    	sys.exit(1)
 
     # Start the string of command-line arguments to be passed to cetus.
-    args = '-preprocessor="gcc217 -E -C -dD" '
+    args = ''
 
     # If TEMP_DIR doesn't exist, then create it.
     if not os.path.exists(TEMP_DIR):

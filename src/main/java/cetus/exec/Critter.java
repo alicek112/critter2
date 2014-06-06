@@ -1251,7 +1251,10 @@ public class Critter {
     	return prev;
     }
    
-    
+    public static int usage() {
+    	System.out.println("USAGE: Critter filename");
+    	return -1;
+    }
    
     /**
     * Entry point for Cetus; creates a new Driver object,
@@ -1260,7 +1263,12 @@ public class Critter {
     * @param args Command line options.
     */
     public static void main(String[] args) {
-    	Program program = (new CritterDriver()).parseProgram(args[1]);
+    	
+    	if (args.length != 1) {
+    		System.exit(usage());
+    	}
+    	
+    	Program program = (new CritterDriver()).parseProgram(args[0]);
     	
     	Critter dt = new Critter(program);
         
