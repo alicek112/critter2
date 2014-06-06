@@ -1,9 +1,10 @@
-package cetus.exec;
+package org.critter2;
 
 import static org.junit.Assert.*;
 
 import java.net.URL;
 
+import org.critter2.Critter;
 import org.junit.Test;
 
 public class CritterTest {

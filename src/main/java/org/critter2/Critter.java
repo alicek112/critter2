@@ -9,12 +9,14 @@
  */
 
 
-package cetus.exec;
+package org.critter2;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.critter2.checks.CheckLoop;
 
 import cetus.base.grammars.CetusCParser;
 import cetus.hir.AnnotationDeclaration;
@@ -99,21 +101,7 @@ public class Critter {
     
 
     public Critter(Program program) {
-    	/*
-    	Program program = new Program();
-        CommandLineOptionSet options = new CommandLineOptionSet();
-        options.add(options.UTILITY,
-                "preprocessor",
-                "gcc -E -C -dD",
-                "command",
-                "Set the preprocessor command to use");
-        
-        String dir = (new File(filename)).getParent();
-        CetusParser cparser = new CetusCParser(dir);
-        TranslationUnit tu = cparser.parseFile(filename, options);
-        program.addTranslationUnit(tu);
-        
-        */
+    	
         this.program = program;
     }
     
@@ -1281,7 +1269,6 @@ public class Critter {
         dt.checkFunctionCommentValid();
         dt.checkFunctionHasEnoughComments();
         dt.checkGlobalHasComment();
-        dt.checkLoop();
         dt.checkFunctionParams();
         dt.checkFunctionLengthByLines();
         dt.checkFunctionNumber();
@@ -1297,6 +1284,13 @@ public class Critter {
         dt.checkNesting();
         dt.checkEmptyCompound();
         dt.checkAsserts();
+        
+        CritterCheck[] checks = {
+        		new CheckLoop(program)
+        };
+        
+        for (CritterCheck check : checks)
+        	check.check();
 
         System.err.println();
         System.err.println("----------------------------");
