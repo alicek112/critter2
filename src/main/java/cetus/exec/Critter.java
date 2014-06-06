@@ -1260,10 +1260,9 @@ public class Critter {
     * @param args Command line options.
     */
     public static void main(String[] args) {
-    	FixedDriver fd = new FixedDriver();
-    	fd.parseProgram("/Users/alicek112/IW/pragma_hello.c");
+    	Program program = (new CritterDriver()).parseProgram(args[1]);
     	
-    	Critter dt = new Critter(fd.parseProgram("/Users/alicek112/IW/pragma_hello.c"));
+    	Critter dt = new Critter(program);
         
         System.err.println("critTer2 warnings start here");
         System.err.println("----------------------------");
@@ -1294,42 +1293,6 @@ public class Critter {
         System.err.println();
         System.err.println("----------------------------");
         System.err.println("critTer2 warnings end here");
-        
-    }
-}
-
-class FixedDriver extends Driver {
-	public Program getProgram() {
-		return program;
-	}
-	
-	protected Program parseProgram(String filename) {
-        Program program = new Program();
-        CommandLineOptionSet options = new CommandLineOptionSet();
-        options.add(options.UTILITY,
-                "preprocessor",
-                "gcc -E -C -dD",
-                "command",
-                "Set the preprocessor command to use");
-        
-        String dir = (new File(filename)).getParent();
-        CetusParser cparser = new CetusCParser(dir);
-        TranslationUnit tu = cparser.parseFile(filename, options);
-        program.addTranslationUnit(tu);
-        
-        
-        return program;
-        
-    }
-	
-	protected void parseFiles() {
-        program = new Program();
-        String dir = (new File(filenames.get(0))).getParent();
-        CetusParser cparser = new CetusCParser(dir);
-        for (String file : filenames) {
-        	TranslationUnit tu = cparser.parseFile(file, options);
-            program.addTranslationUnit(tu);
-        }
         
     }
 }
