@@ -17,7 +17,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.critter2.checks.CheckBeginningComment;
+import org.critter2.checks.CheckFunctionLengthByLines;
 import org.critter2.checks.CheckFunctionNaming;
+import org.critter2.checks.CheckFunctionNumber;
 import org.critter2.checks.CheckLoop;
 
 import cetus.base.grammars.CetusCParser;
@@ -1271,9 +1273,6 @@ public class Critter {
         dt.checkFunctionHasEnoughComments();
         dt.checkGlobalHasComment();
         dt.checkFunctionParams();
-        dt.checkFunctionLengthByLines();
-        dt.checkFunctionNumber();
-        dt.checkFunctionNaming();
         dt.checkFileLength();
         dt.checkSwitchHasDefaultCase();
         dt.checkSwitchCases();
@@ -1289,7 +1288,9 @@ public class Critter {
         CritterCheck[] checks = {
         		new CheckLoop(program),
         		new CheckBeginningComment(program),
-        		new CheckFunctionNaming(program)
+        		new CheckFunctionNaming(program),
+        		new CheckFunctionLengthByLines(program),
+        		new CheckFunctionNumber(program)
         };
         
         for (CritterCheck check : checks)
