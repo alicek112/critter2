@@ -11,20 +11,10 @@
 
 package critter2;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import critter2.checks.CheckAsserts;
-import critter2.checks.CheckBeginningComment;
-import critter2.checks.CheckFunctionCommentValid;
-import critter2.checks.CheckFunctionLengthByLines;
-import critter2.checks.CheckFunctionNaming;
-import critter2.checks.CheckFunctionNumber;
-import critter2.checks.CheckLoop;
-
-import cetus.base.grammars.CetusCParser;
 import cetus.hir.AnnotationDeclaration;
 import cetus.hir.AnnotationStatement;
 import cetus.hir.Case;
@@ -47,13 +37,15 @@ import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Statement;
 import cetus.hir.SwitchStatement;
-import cetus.hir.SymbolTools;
-import cetus.hir.Tools;
-import cetus.hir.TranslationUnit;
 import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
-import cetus.transforms.AnnotationParser;
-import cetus.transforms.TransformPass;
+import critter2.checks.CheckAsserts;
+import critter2.checks.CheckBeginningComment;
+import critter2.checks.CheckFunctionCommentValid;
+import critter2.checks.CheckFunctionLengthByLines;
+import critter2.checks.CheckFunctionNaming;
+import critter2.checks.CheckFunctionNumber;
+import critter2.checks.CheckLoop;
 
 /**
 * Implements the command line parser and controls pass ordering.
