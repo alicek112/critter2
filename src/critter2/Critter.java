@@ -59,6 +59,7 @@ public class Critter {
     
 	private final Program program;
 	
+	
     // COS217 maximum loop length
     private int MAX_LOOP_LENGTH = 35;
     // COS217 maximum function length
