@@ -9,7 +9,7 @@
  */
 
 
-package org.critter2;
+package critter2;
 
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.Program;

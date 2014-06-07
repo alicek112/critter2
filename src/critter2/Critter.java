@@ -9,20 +9,20 @@
  */
 
 
-package org.critter2;
+package critter2;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.critter2.checks.CheckAsserts;
-import org.critter2.checks.CheckBeginningComment;
-import org.critter2.checks.CheckFunctionCommentValid;
-import org.critter2.checks.CheckFunctionLengthByLines;
-import org.critter2.checks.CheckFunctionNaming;
-import org.critter2.checks.CheckFunctionNumber;
-import org.critter2.checks.CheckLoop;
+import critter2.checks.CheckAsserts;
+import critter2.checks.CheckBeginningComment;
+import critter2.checks.CheckFunctionCommentValid;
+import critter2.checks.CheckFunctionLengthByLines;
+import critter2.checks.CheckFunctionNaming;
+import critter2.checks.CheckFunctionNumber;
+import critter2.checks.CheckLoop;
 
 import cetus.base.grammars.CetusCParser;
 import cetus.hir.AnnotationDeclaration;

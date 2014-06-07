@@ -1,7 +1,7 @@
-package org.critter2.checks;
+package critter2.checks;
 
-import org.critter2.CritterCheck;
-import org.critter2.Utils;
+import critter2.CritterCheck;
+import critter2.Utils;
 import org.junit.Test;
 
 import cetus.hir.Program;

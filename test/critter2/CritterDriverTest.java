@@ -1,8 +1,8 @@
-package org.critter2;
+package critter2;
 
 import static org.junit.Assert.*;
 
-import org.critter2.CritterDriver;
+import critter2.CritterDriver;
 import org.junit.Test;
 
 import cetus.hir.Program;

@@ -1,4 +1,4 @@
-package org.critter2;
+package critter2;
 
 import java.io.File;
 

@@ -7,15 +7,33 @@ repositories {
 }
 
 dependencies {
-    compile files('./src/main/resources/cetus.jar')
+    compile files('./Jars/cetus.jar')
     compile 'org.antlr:antlr-complete:3.5.2'
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src'
+        }
+        output.classesDir = 'bin'
+    }
+    
+    test {
+    	java {
+    		srcDir 'test'
+    	}
+    	resources {
+    		srcDir 'test/resources'
+    	}
+    }
 }
 
 distributions {
     main {
         baseName = 'critTer2'
         contents {
-            from { 'build/libs',}
+            from { 'build/libs'}
         }
     }
 }

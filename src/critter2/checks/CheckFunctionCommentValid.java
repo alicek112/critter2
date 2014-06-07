@@ -1,9 +1,9 @@
-package org.critter2.checks;
+package critter2.checks;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.critter2.CritterCheck;
+import critter2.CritterCheck;
 
 import cetus.hir.AnnotationDeclaration;
 import cetus.hir.DepthFirstIterator;

@@ -1,4 +1,4 @@
-package org.critter2;
+package critter2;
 
 import static org.junit.Assert.*;
 
@@ -12,10 +12,10 @@ public class Utils {
 		URL url = Thread.currentThread().getContextClassLoader().getResource("");
 		
 		// gradle and eclipse disagree on resource location base
-		if ((new File(url.getPath() + "../../../src/test/resources/" + name)).isFile())
-			return url.getPath() + "../../../src/test/resources/" + name;
+		if ((new File(url.getPath() + "../../../test/resources/" + name)).isFile())
+			return url.getPath() + "../../../test/resources/" + name;
 		else
-			return url.getPath() + "../src/test/resources/" + name;
+			return url.getPath() + "../test/resources/" + name;
 	}
 	
 	public static Program getProgram(String name) {

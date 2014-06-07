@@ -1,6 +1,6 @@
-package org.critter2.checks;
+package critter2.checks;
 
-import org.critter2.CritterCheck;
+import critter2.CritterCheck;
 
 import cetus.hir.AnnotationStatement;
 import cetus.hir.DepthFirstIterator;
