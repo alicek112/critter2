@@ -2,6 +2,7 @@ package org.critter2;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.net.URL;
 
 import cetus.hir.Program;
@@ -10,7 +11,11 @@ public class Utils {
 	public static String res(String name) {
 		URL url = Thread.currentThread().getContextClassLoader().getResource("");
 		
-		return url.getPath() + "../src/test/resources/" + name;
+		// gradle and eclipse disagree on resource location base
+		if ((new File(url.getPath() + "../../../src/test/resources/" + name)).isFile())
+			return url.getPath() + "../../../src/test/resources/" + name;
+		else
+			return url.getPath() + "../src/test/resources/" + name;
 	}
 	
 	public static Program getProgram(String name) {

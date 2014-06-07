@@ -12,8 +12,8 @@ public class CheckFunctionNamingTest {
 		Program program = Utils.getProgram("pragma_functionNaming.c");
 		
 		CritterCheck check = new CheckFunctionNaming(program, new Utils.TestErrorReporter(
-				"\n../../test/resources/functionNaming.c: line 7: medium priority: \nA function's " +
-				"prefix should match the module name; prefix and badprefix do not match\n"));
+				"\n../../test/resources/functionNaming.c: line 8: medium priority: " +
+				"\nA function's prefix should match the module name; prefix and badprefix do not match\n"));
 		check.check();
 		
 	}

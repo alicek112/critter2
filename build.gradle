@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'distribution'
 
 repositories {
     mavenCentral()
@@ -10,6 +11,14 @@ dependencies {
     compile 'org.antlr:antlr-complete:3.5.2'
 }
 
+distributions {
+    main {
+        baseName = 'critTer2'
+        contents {
+            from { 'build/libs',}
+        }
+    }
+}
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
