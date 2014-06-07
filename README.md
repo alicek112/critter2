@@ -1,6 +1,6 @@
 critter2
 ========
-![https://travis-ci.org/alicek112/critter2.svg?branch=master]
+!(https://travis-ci.org/alicek112/critter2.svg?branch=master)
 C style checking tool aimed at Princeton University's course COS217: Introduction to Programming Systems
 
 Building
