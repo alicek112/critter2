@@ -10,7 +10,7 @@ import cetus.hir.Traversable;
 public class CheckFunctionNumber extends CritterCheck {
 	
 	// COS217 maximum function number per file
-    private final int MAX_FUNCTION_NUMBER = 15;
+    private static final int MAX_FUNCTION_NUMBER = 15;
 
 	public CheckFunctionNumber(Program program, ErrorReporter errorReporter) {
 		super(program, errorReporter);
