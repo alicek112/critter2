@@ -2,6 +2,8 @@ apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'distribution'
 
+defaultTasks 'clean', 'compileJava', 'compileTestJava', 'test'
+
 repositories {
     mavenCentral()
 }
@@ -16,7 +18,6 @@ sourceSets {
         java {
             srcDir 'src'
         }
-        output.classesDir = 'bin'
     }
     
     test {
