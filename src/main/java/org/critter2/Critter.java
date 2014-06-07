@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.critter2.checks.CheckAsserts;
 import org.critter2.checks.CheckBeginningComment;
 import org.critter2.checks.CheckFunctionCommentValid;
 import org.critter2.checks.CheckFunctionLengthByLines;
@@ -1276,6 +1277,7 @@ public class Critter {
         dt.checkFileLength();
         dt.checkSwitchHasDefaultCase();
         dt.checkSwitchCases();
+        
         dt.checkStructHasComment();
         dt.checkGoTos();
         dt.checkMagicNumbers();
@@ -1283,7 +1285,6 @@ public class Critter {
         //dt.checkFunctionLengthByStatement();
         dt.checkNesting();
         dt.checkEmptyCompound();
-        dt.checkAsserts();
         
         CritterCheck[] checks = {
         		new CheckLoop(program),
@@ -1291,7 +1292,8 @@ public class Critter {
         		new CheckFunctionNaming(program),
         		new CheckFunctionLengthByLines(program),
         		new CheckFunctionNumber(program), 
-        		new CheckFunctionCommentValid(program)
+        		new CheckFunctionCommentValid(program),
+        		new CheckAsserts(program)
         };
         
         for (CritterCheck check : checks)
