@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.critter2.checks.CheckBeginningComment;
+import org.critter2.checks.CheckFunctionCommentValid;
 import org.critter2.checks.CheckFunctionLengthByLines;
 import org.critter2.checks.CheckFunctionNaming;
 import org.critter2.checks.CheckFunctionNumber;
@@ -1269,7 +1270,6 @@ public class Critter {
         System.err.println();
         
         // Checks begin here.
-        dt.checkFunctionCommentValid();
         dt.checkFunctionHasEnoughComments();
         dt.checkGlobalHasComment();
         dt.checkFunctionParams();
@@ -1290,7 +1290,8 @@ public class Critter {
         		new CheckBeginningComment(program),
         		new CheckFunctionNaming(program),
         		new CheckFunctionLengthByLines(program),
-        		new CheckFunctionNumber(program)
+        		new CheckFunctionNumber(program), 
+        		new CheckFunctionCommentValid(program)
         };
         
         for (CritterCheck check : checks)

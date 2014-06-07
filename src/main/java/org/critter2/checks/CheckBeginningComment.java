@@ -4,6 +4,7 @@ import org.critter2.CritterCheck;
 
 import cetus.hir.AnnotationDeclaration;
 import cetus.hir.DepthFirstIterator;
+import cetus.hir.PreAnnotation;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
 
@@ -33,7 +34,7 @@ public class CheckBeginningComment extends CritterCheck {
     				"\nA file should begin with a comment.\n");
     	}
     	
-    	if (!(first instanceof AnnotationDeclaration)) {
+    	if (!(first instanceof PreAnnotation)) {
     		reportErrorPos(first, "high priority: " +
     				"\nA file should begin with a comment.\n");
     	}
@@ -52,7 +53,7 @@ public class CheckBeginningComment extends CritterCheck {
     				reportErrorPos(n, "high priority: " +
     						"\nA file should begin with a comment.\n");
     			}
-    			if (!(n instanceof AnnotationDeclaration)) {
+    			if (!(n instanceof PreAnnotation)) {
     				reportErrorPos(n, "high priority: " +
     						"\nA file should begin with a comment.\n");
     			}
