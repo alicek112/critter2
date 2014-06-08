@@ -1,8 +1,9 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'distribution'
+apply plugin: 'findbugs'
 
-defaultTasks 'clean', 'compileJava', 'compileTestJava', 'test'
+defaultTasks 'clean', 'compileJava', 'compileTestJava', 'test', 'chmod'
 
 repositories {
     mavenCentral()
@@ -41,5 +42,11 @@ distributions {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '1.12'
+}
+
+task(chmod) << {
+	def command = "chmod +x bin/annotate bin/critTer2"
+	def proc = command.execute()
+	proc.waitFor()
 }
 
