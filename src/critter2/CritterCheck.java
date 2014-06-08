@@ -45,7 +45,7 @@ public abstract class CritterCheck {
     }
     
     public void reportErrorPos(Traversable t, String message, Object... args) {
-    	String error = String.format("\n%s: line %d: ", getFilename(t), getLineNumber(t)) + String.format(message, args);
+    	String error = String.format("%n%s: line %d: ", getFilename(t), getLineNumber(t)) + String.format(message, args);
     	reportError(error);
     }
     

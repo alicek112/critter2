@@ -50,3 +50,13 @@ task(chmod) << {
 	proc.waitFor()
 }
 
+tasks.withType(FindBugs) {
+    reports {
+        html { enabled = true }
+        xml.enabled = !html.enabled
+    }
+}
+
+tasks.withType(Compile) { 
+    options.compilerArgs << "-Xlint:unchecked" 
+} 

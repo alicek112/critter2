@@ -59,7 +59,6 @@ public class Critter {
     
 	private final Program program;
 	
-	
     // COS217 maximum loop length
     private int MAX_LOOP_LENGTH = 35;
     // COS217 maximum function length
@@ -159,11 +158,11 @@ public class Critter {
     			}
     			
     			if (looplinecount > MAX_LOOP_LENGTH) {
-    				System.err.printf("\n%s: line %d: low priority: " +
-    						"\nA loop should consist of fewer than %d " +
-    						"lines;\n " +
+    				System.err.printf("%n%s: line %d: low priority: " +
+    						"%nA loop should consist of fewer than %d " +
+    						"lines;%n " +
     						"this loop consists of %d lines; consider " +
-    						"refactoring\n", 
+    						"refactoring%n", 
     						getFilename(t), getLineNumber(t),
     						MAX_LOOP_LENGTH, looplinecount);
     			}
@@ -219,9 +218,9 @@ public class Critter {
 	    				commonPrefix = prefix;
 	    			else if (prefix.compareTo("main") != 0) {
 	    				if (commonPrefix.compareTo(prefix) != 0) {
-	    					System.err.printf("\n%s: line %d: medium priority: " +
-	    							"\nA function's prefix should match the " +
-	    							"module name; %s and %s do not match\n", 
+	    					System.err.printf("%n%s: line %d: medium priority: " +
+	    							"%nA function's prefix should match the " +
+	    							"module name; %s and %s do not match%n", 
 	    							getFilename(t), getLineNumber(t),
 	        						commonPrefix, prefix);
 	    					
@@ -265,11 +264,11 @@ public class Critter {
     			}
     			
     			if (looplinecount > MAX_FUNCTION_LENGTH) {
-    				System.err.printf("\n%s: line %d: low priority: " +
-    						"\nA function should consist of fewer than " +
-    						"%d lines;\n " +
+    				System.err.printf("%n%s: line %d: low priority: " +
+    						"%nA function should consist of fewer than " +
+    						"%d lines;%n " +
     						"this function consists of %d lines; " +
-    						"consider refactoring\n", 
+    						"consider refactoring%n", 
     						getFilename(t), getLineNumber(t),
     						MAX_FUNCTION_LENGTH, looplinecount);
     			}
@@ -309,9 +308,9 @@ public class Critter {
     	}
     	
     	if (functioncount > MAX_FUNCTION_NUMBER) {
-			System.err.printf("\n%s: low priority: \nA file should " +
-					"contain no more than %d functions;\n " +
-					"this file contains %d functions\n", 
+			System.err.printf("%n%s: low priority: %nA file should " +
+					"contain no more than %d functions;%n " +
+					"this file contains %d functions%n", 
 					currentFilename, MAX_FUNCTION_NUMBER, functioncount);
 		}
     }
@@ -338,9 +337,9 @@ public class Critter {
     			int paramNum = ((Procedure) t).getNumParameters();
     			
     			if (paramNum > MAX_PARAMETER_NUMBER) {
-    				System.err.printf("\n%s: line %d: medium priority: " +
-    						"\nA function should have no more than %d " +
-    						"parameters; this function has %d\n", 
+    				System.err.printf("%n%s: line %d: medium priority: " +
+    						"%nA function should have no more than %d " +
+    						"parameters; this function has %d%n", 
     						getFilename(t), getLineNumber(t),
     						MAX_PARAMETER_NUMBER, paramNum);
     			}	
@@ -369,8 +368,8 @@ public class Critter {
     		else if (t instanceof Procedure) {
     			Procedure function = (Procedure) t;
     			
-	    		List list = function.getReturnType();
-	    		List stringList = new ArrayList();
+	    		List<?> list = function.getReturnType();
+	    		List<String> stringList = new ArrayList<String>();
 	    			
 	   			for (Object x : list) {
 	   				stringList.add(x.toString());
@@ -393,10 +392,10 @@ public class Critter {
 		   					String paramName = 
 		   						function.getParameter(i).getDeclaredIDs().get(0).toString();
 		   					if (!comment.toString().contains(paramName)) {
-		   						System.err.printf("\n%s: line %d: high priority: " +
-		   								"\nA function's comment should refer to " +
-		   								"each parameter by name;\nyour comment " +
-		   								"does not refer to '%s'\n",
+		   						System.err.printf("%n%s: line %d: high priority: " +
+		   								"%nA function's comment should refer to " +
+		   								"each parameter by name;%nyour comment " +
+		   								"does not refer to '%s'%n",
 	    								getFilename(comment), getLineNumber(comment), paramName);
 		   					}
 		    			}
@@ -406,9 +405,9 @@ public class Critter {
 		    			if (!stringList.contains("void")) {
 			    			if (!comment.toString().contains("return") && 
 			    					!comment.toString().contains("Return")) {
-			   					System.err.printf("\n%s: line %d: high priority: " +
-			   							"\nA function's comment should state " +
-			   	                        "explicitly what the function returns\n",
+			   					System.err.printf("%n%s: line %d: high priority: " +
+			   							"%nA function's comment should state " +
+			   	                        "explicitly what the function returns%n",
 										getFilename(comment), getLineNumber(comment));
 		    				}
 	    				}
@@ -416,8 +415,8 @@ public class Critter {
 	   			}
 	   			
 	   			if (!(p instanceof AnnotationDeclaration)) {
-		    		System.err.printf("\n%s: line %d: high priority: " +
-		    				"\nA function definition should have a comment\n",
+		    		System.err.printf("%n%s: line %d: high priority: " +
+		    				"%nA function definition should have a comment%n",
 		    					getFilename(function), getLineNumber(function));		
 	    		}
     		}
@@ -469,9 +468,9 @@ public class Critter {
     			
     			if ((countElements - countComments) 
     					> MAX_LOCAL_COMMENT_DISCREPANCY) {
-    				System.err.printf("\n%s: line %d: low priority: " +
-    						"\nThis function definition probably needs" +
-    						" more local comments\n",
+    				System.err.printf("%n%s: line %d: low priority: " +
+    						"%nThis function definition probably needs" +
+    						" more local comments%n",
     						getFilename(t), getLineNumber(t));
     			}
     			
@@ -509,9 +508,9 @@ public class Critter {
 	    					&& !(p instanceof AnnotationDeclaration)) {
 	    				if (t.getParent().getParent() != null) {
 	    					if (!(t.getParent().getParent() instanceof VariableDeclaration)) {
-			    				System.err.printf("\n%s: line %d: high priority: " +
-			    						"\nA comment should appear above each " +
-			    						"global variable.\n",
+			    				System.err.printf("%n%s: line %d: high priority: " +
+			    						"%nA comment should appear above each " +
+			    						"global variable.%n",
 			    						getFilename(t), getLineNumber(t));
 	    					}
 	    				}
@@ -536,14 +535,14 @@ public class Critter {
     	Traversable first = dfs.next();
     	
     	if (first.toString().startsWith("#pragma")) {
-    		System.err.printf("\n%s: line %d: high priority: " +
-    				"\nA file should begin with a comment.\n",
+    		System.err.printf("%n%s: line %d: high priority: " +
+    				"%nA file should begin with a comment.%n",
 					getFilename(first), getLineNumber(first));
     	}
     	
     	if (!(first instanceof AnnotationDeclaration)) {
-    		System.err.printf("\n%s: line %d: high priority: " +
-    				"\nA file should begin with a comment.\n",
+    		System.err.printf("%n%s: line %d: high priority: " +
+    				"%nA file should begin with a comment.%n",
 					getFilename(first), getLineNumber(first));
     	}
     	
@@ -558,13 +557,13 @@ public class Critter {
     	    		t = dfs.next();
     			Traversable n = dfs.next();
     			if (n.toString().startsWith("#pragma critTer")) {
-    				System.err.printf("\n%s: line %d: high priority: " +
-    						"\nA file should begin with a comment.\n",
+    				System.err.printf("%n%s: line %d: high priority: " +
+    						"%nA file should begin with a comment.%n",
     						getFilename(n), getLineNumber(n));
     			}
     			if (!(n instanceof AnnotationDeclaration)) {
-    				System.err.printf("\n%s: line %d: high priority: " +
-    						"\nA file should begin with a comment.\n",
+    				System.err.printf("%n%s: line %d: high priority: " +
+    						"%nA file should begin with a comment.%n",
     						getFilename(n), getLineNumber(n));
     			}
     		}
@@ -602,9 +601,9 @@ public class Critter {
     			}
     			
     			if (!hasDefault) {
-    				System.err.printf("\n%s: line %d: low priority: " +
-    						"\nA switch statement should have a default " +
-    						"case\n",
+    				System.err.printf("%n%s: line %d: low priority: " +
+    						"%nA switch statement should have a default " +
+    						"case%n",
     						getFilename(t), getLineNumber(t));
     			}
     		}
@@ -646,10 +645,10 @@ public class Critter {
     						currentCase = i;
     					}
     					else {
-    						System.err.printf("\n%s: line %d: medium priority:" +
-    								" \nEach case/default in a switch statement " +
+    						System.err.printf("%n%s: line %d: medium priority:" +
+    								" %nEach case/default in a switch statement " +
     								"should have a break or return statement, " +
-    								"you're missing one here.\n",
+    								"you're missing one here.%n",
     								getFilename(currentCase), 
     								getLineNumber(currentCase));
     					}
@@ -687,9 +686,9 @@ public class Critter {
     		// deals with student's included files
     		else if (t.toString().startsWith("#pragma critTer:endStudentInclude:")) {
     			if (getLineNumber(t) > MAX_FILE_LENGTH) {
-    	    		System.err.printf("\n%s: low priority: \nA source " +
+    	    		System.err.printf("%n%s: low priority: %nA source " +
     	    				"code file should contain fewer than %d " +
-    	    				"lines;\nthis file contains %d lines\n",
+    	    				"lines;%nthis file contains %d lines%n",
     						getFilename(t), MAX_FILE_LENGTH, getLineNumber(t));
     	    	}
     			
@@ -706,9 +705,9 @@ public class Critter {
     	}
     	
     	if (linecount > MAX_FILE_LENGTH) {
-    		System.err.printf("\n%s: low priority: \nA source code " +
+    		System.err.printf("%n%s: low priority: %nA source code " +
     				"file should contain fewer than %d " +
-    				"lines;\nthis file contains %d lines\n",
+    				"lines;%nthis file contains %d lines%n",
 					currentFilename, MAX_FILE_LENGTH, linecount);
     	}
     }
@@ -743,9 +742,9 @@ public class Critter {
 	        			Traversable p = getPreviousNonPragma(c.getParent());
 	        			if (!(p instanceof PreAnnotation)) {
 	        				
-	        				System.err.printf("\n%s: line %d: medium priority:" +
-	        						" \nA comment should appear above each " +
-	        						"field in a struct.\n",
+	        				System.err.printf("%n%s: line %d: medium priority:" +
+	        						" %nA comment should appear above each " +
+	        						"field in a struct.%n",
 	        						getFilename(c), getLineNumber(c));
 	        			}
 	        			
@@ -773,8 +772,8 @@ public class Critter {
     		}
     		
     		else if (t instanceof GotoStatement) {
-    			System.err.printf("\n%s: line %d: high priority: " +
-    					"\nNever use GOTO statements\n",
+    			System.err.printf("%n%s: line %d: high priority: " +
+    					"%nNever use GOTO statements%n",
 						getFilename(t), getLineNumber(t));
     		}
     	}
@@ -807,12 +806,12 @@ public class Critter {
 	    			String c = ((Case) t).getExpression().toString();
 	    			
 	    			if (isNumeric(c)) {
-	    				System.err.printf("\n%s: line %d: high priority: " +
-	    						"\nUse of magic number (%s), which should " +
+	    				System.err.printf("%n%s: line %d: high priority: " +
+	    						"%nUse of magic number (%s), which should " +
 	    						"be given a meaningful name, " +
 	    						"or a #define, which should be replaced " +
 	    						"with an enum (unless it's the result of " +
-	    						"a #define in a standard C header file)\n",
+	    						"a #define in a standard C header file)%n",
 	    						getFilename(t), getLineNumber(t), c);
 	    			}
 	    			
@@ -823,12 +822,12 @@ public class Critter {
 	    			if (!t.getParent().toString().startsWith("__")) {
 	    				if (number.getValue() != 0 && number.getValue() != 1 
 	    						&& number.getValue() != 2) {
-	    					System.err.printf("\n%s: line %d: high priority:" +
-	    							" \nUse of magic number (%s), which should" +
+	    					System.err.printf("%n%s: line %d: high priority:" +
+	    							" %nUse of magic number (%s), which should" +
 	    							" be given a meaningful name, " +
 	    						    "or a #define, which should be replaced " +
 	    						    "with an enum (unless it's the result of " +
-	    						    "a #define in a standard C header file)\n",
+	    						    "a #define in a standard C header file)%n",
 	        						getFilename(t), getLineNumber(t), 
 	        						t.toString());
 	    				}	
@@ -841,12 +840,12 @@ public class Critter {
 	    			if (!t.getParent().toString().startsWith("__")) {
 	    				if (number.getValue() != 0 && number.getValue() != 1 
 	    						&& number.getValue() != 2) {
-	    					System.err.printf("\n%s: line %d: high priority: " +
-	    							"\nUse of magic number (%s), which should " +
+	    					System.err.printf("%n%s: line %d: high priority: " +
+	    							"%nUse of magic number (%s), which should " +
 	    							"be given a meaningful name, " +
 	    						    "or a #define, which should be replaced with " +
 	    						    "an enum (unless it's the result of a #define " +
-	    						    "in a standard C header file)\n",
+	    						    "in a standard C header file)%n",
 	        						getFilename(t), getLineNumber(t), 
 	        						t.toString());
 	    				}	
@@ -883,9 +882,9 @@ public class Critter {
     				String xName = x.toString();
     				if (!ACCEPTABLE_VAR_NAMES.contains(xName)) {
     					if (xName.length() < MIN_VAR_NAME_LENGTH) {
-    						System.err.printf("\n%s: line %d: medium priority:" +
-    								" \nVariable/function name '%s' " +
-    								"is too short\n",
+    						System.err.printf("%n%s: line %d: medium priority:" +
+    								" %nVariable/function name '%s' " +
+    								"is too short%n",
             						getFilename(t), getLineNumber(t), xName);
     					}
     				}
@@ -898,9 +897,9 @@ public class Critter {
     				String xName = x.toString();
     				if (!ACCEPTABLE_VAR_NAMES.contains(xName)) {
     					if (xName.length() < MIN_VAR_NAME_LENGTH) {
-    						System.err.printf("\n%s: line %d: medium priority:" +
-    								" \nVariable/function name '%s' " +
-    								"is too short\n",
+    						System.err.printf("%n%s: line %d: medium priority:" +
+    								" %nVariable/function name '%s' " +
+    								"is too short%n",
             						getFilename(t), getLineNumber(t), xName);
     					}
     				}
@@ -932,10 +931,10 @@ public class Critter {
     			int statementcount = countStatements(body);
     			
     			if (statementcount > MAX_FUNCTION_STATEMENT_LENGTH) {
-    				System.err.printf("\n%s: line %d: low priority: " +
-    						"\nA function definition should consist of " +
-    						"fewer than %d statements;\nthis function " +
-    						"definition consists of %d statements\n",
+    				System.err.printf("%n%s: line %d: low priority: " +
+    						"%nA function definition should consist of " +
+    						"fewer than %d statements;%nthis function " +
+    						"definition consists of %d statements%n",
     						getFilename(t), getLineNumber(t), 
     						MAX_FUNCTION_STATEMENT_LENGTH, statementcount);
     			}
@@ -975,9 +974,9 @@ public class Critter {
 	    			}
 	    			
 	    			if (nesting > MAX_NESTING) {
-	    				System.err.printf("\n%s: line %d: low priority: " +
-	    						"\nThis area is deeply nested at level %d," +
-	    						" consider refactoring\n",
+	    				System.err.printf("%n%s: line %d: low priority: " +
+	    						"%nThis area is deeply nested at level %d," +
+	    						" consider refactoring%n",
 	    						getFilename(body), getLineNumber(body), 
 	    						nesting);
 	    			}
@@ -1011,9 +1010,9 @@ public class Critter {
 	    				parent = parent.getParent();
 	    			}
 	    			if (nesting > MAX_NESTING) {
-	    				System.err.printf("\n%s: line %d: low priority: " +
-	    						"\nThis area is deeply nested at level %d," +
-	    						" consider refactoring\n",
+	    				System.err.printf("%n%s: line %d: low priority: " +
+	    						"%nThis area is deeply nested at level %d," +
+	    						" consider refactoring%n",
 	    						getFilename(t), getLineNumber(t), nesting);
 	    			}
 	    		}
@@ -1031,9 +1030,9 @@ public class Critter {
 	    			}
 	    			
 	    			if (nesting > MAX_NESTING) {
-	    				System.err.printf("\n%s: line %d: low priority: " +
-	    						"\nThis area is deeply nested at level %d," +
-	    						" consider refactoring\n",
+	    				System.err.printf("%n%s: line %d: low priority: " +
+	    						"%nThis area is deeply nested at level %d," +
+	    						" consider refactoring%n",
 	    						getFilename(body), getLineNumber(body), 
 	    						nesting);
 	    			}
@@ -1060,9 +1059,9 @@ public class Critter {
     			}
     		}
     		
-    		else if (t.toString().compareTo("{\n\n}") == 0) {
-    			System.err.printf("\n%s: line %d: medium priority: " +
-    					"\nDo not use empty compound statements.\n",
+    		else if (t.toString().compareTo("\n\n}") == 0) {
+    			System.err.printf("%n%s: line %d: medium priority: " +
+    					"%nDo not use empty compound statements.%n",
 						getFilename(t), getLineNumber(t));
     		}
     	}
@@ -1089,7 +1088,8 @@ public class Critter {
 	    		DepthFirstIterator<Traversable> functiondfs = 
 	    				new DepthFirstIterator<Traversable>(t);
 	    		
-	    		List<Declaration> params = ((Procedure) t).getParameters();
+	    		@SuppressWarnings("unchecked")
+				List<Declaration> params = ((Procedure) t).getParameters();
 	    		List<String> paramNames = new ArrayList<String>();
 	    		
 	    		for (Declaration p : params) {
@@ -1124,9 +1124,9 @@ public class Critter {
 		    	for (int i = 0; i < hasAssert.length; i++) {
 		    		if (paramNames.get(i).compareTo("argv") != 0) {
 			    		if (!hasAssert[i]) {
-			   				System.err.printf("\n%s: line %d: medium priority:" +
-			   						" \nDo you want to validate '%s' " +
-			   						"through an assert?\n",
+			   				System.err.printf("%n%s: line %d: medium priority:" +
+			   						" %nDo you want to validate '%s' " +
+			   						"through an assert?%n",
 			   						getFilename(t), getLineNumber(t), 
 			   						paramNames.get(i));
 			   			}

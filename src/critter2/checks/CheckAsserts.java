@@ -42,7 +42,8 @@ public class CheckAsserts extends CritterCheck {
 	    		DepthFirstIterator<Traversable> functiondfs = 
 	    				new DepthFirstIterator<Traversable>(t);
 	    		
-	    		List<Declaration> params = ((Procedure) t).getParameters();
+	    		@SuppressWarnings("unchecked")
+				List<Declaration> params = ((Procedure) t).getParameters();
 	    		List<String> paramNames = new ArrayList<String>();
 	    		
 	    		for (Declaration p : params) {

@@ -12,6 +12,9 @@ import cetus.hir.Traversable;
 
 public class CheckLoop extends CritterCheck {
 	
+	// COS217 maximum loop length
+    private static final int MAX_LOOP_LENGTH = 35;
+	
 	public CheckLoop(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
@@ -19,9 +22,6 @@ public class CheckLoop extends CritterCheck {
 	public CheckLoop(Program program) {
 		super(program);
 	}
-
-	// COS217 maximum loop length
-    private final int MAX_LOOP_LENGTH = 35;
 
 	@Override
 	public void check() {

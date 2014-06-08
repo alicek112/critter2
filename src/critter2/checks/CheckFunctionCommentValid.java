@@ -5,7 +5,6 @@ import java.util.List;
 
 import critter2.CritterCheck;
 
-import cetus.hir.AnnotationDeclaration;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.PreAnnotation;
 import cetus.hir.Procedure;
@@ -42,8 +41,8 @@ public class CheckFunctionCommentValid extends CritterCheck {
     		else if (t instanceof Procedure) {
     			Procedure function = (Procedure) t;
     			
-	    		List list = function.getReturnType();
-	    		List stringList = new ArrayList();
+	    		List<?> list = function.getReturnType();
+	    		List<String> stringList = new ArrayList<String>();
 	    			
 	   			for (Object x : list) {
 	   				stringList.add(x.toString());
