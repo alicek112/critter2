@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 #pragma critTer:13:../../test/resources/pragma_forLoop.c:
 	k++;
 #pragma critTer:14:../../test/resources/pragma_forLoop.c:
-	k++;
+	goto label;
 #pragma critTer:15:../../test/resources/pragma_forLoop.c:
 	k++;
 #pragma critTer:16:../../test/resources/pragma_forLoop.c:
@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
 #pragma critTer:17:../../test/resources/pragma_forLoop.c:
 	k++;
 #pragma critTer:18:../../test/resources/pragma_forLoop.c:
-	k++;
+	label: k++;
 #pragma critTer:19:../../test/resources/pragma_forLoop.c:
 	k++;
 #pragma critTer:20:../../test/resources/pragma_forLoop.c:

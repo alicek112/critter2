@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import cetus.hir.Program;
 
@@ -26,23 +28,27 @@ public class Utils {
 	
 	public static class TestErrorReporter implements CritterCheck.ErrorReporter {
 		
-		private final String model;
+		public final List<String> reportedErrors = new ArrayList<String>();
 		
-		public TestErrorReporter(String model) {
-			this.model = model;
-		}
-
 		@Override
 		public void reportError(String message, Object... args) {
 			String test = String.format(message, args);
 			
+			reportedErrors.add(test);
+		}
+		
+		public void assertErrorEquals(int index, String model) {
+			String test = reportedErrors.get(index);
 			if (model.compareTo(test) != 0) {
-				System.out.println("\"" + test.replace("\n", "\\n") + "\"");
+				System.out.println("model: \"" + model.replace("\n", "\\n") + "\"");
+				System.out.println("test:  \"" + test.replace("\n", "\\n") + "\"");
 			}
 			
 			assertEquals(model, test);
-			
 		}
 		
+		public void assertNumErrors(int numErrors) {
+			assertEquals(numErrors, reportedErrors.size());
+		}
 	}
 }
