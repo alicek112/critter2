@@ -10,13 +10,15 @@ public class CheckAssertsTest {
 
 	@Test
 	public void test() {
-		// Tests if the check detects a missing comment
 		Program program = Utils.getProgram("pragma_functionCommentReturn.c");
-		CritterCheck check = new CheckAsserts(program, new Utils.TestErrorReporter(
-				"\n../../test/resources/functionCommentReturn.c: line 2: medium priority: " +
-				"\nDo you want to validate 'x' through an assert?\n"));
+		
+		Utils.TestErrorReporter tr = new Utils.TestErrorReporter();
+		CritterCheck check = new CheckAsserts(program, tr);
 		check.check();
 		
+		tr.assertNumErrors(1);
+		tr.assertErrorEquals(0, "\n../../test/resources/functionCommentReturn.c: line 2: medium priority: " +
+				"\nDo you want to validate 'x' through an assert?\n");
 		
 	}
 }

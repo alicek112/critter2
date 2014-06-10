@@ -1,6 +1,6 @@
 typedef int* __WAIT_STATUS;
 #pragma critTer:1:../../test/resources/functionNaming.c:
-/* COMMENT returns a */
+/* bad comment */
 #pragma critTer:2:../../test/resources/functionNaming.c:
 int prefix_Func(int a) {
 #pragma critTer:3:../../test/resources/functionNaming.c:

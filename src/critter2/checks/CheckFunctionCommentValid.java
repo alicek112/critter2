@@ -64,7 +64,8 @@ public class CheckFunctionCommentValid extends CritterCheck {
 		    					
 		   					String paramName = 
 		   						function.getParameter(i).getDeclaredIDs().get(0).toString();
-		   					if (!comment.toString().contains(paramName)) {
+		   					
+		   					if (!comment.toString().contains(" " + paramName)) {
 		   						reportErrorPos(comment, "high priority: " +
 		   								"\nA function's comment should refer to " +
 		   								"each parameter by name;\nyour comment " +
