@@ -45,6 +45,7 @@ import critter2.checks.CheckFunctionCommentValid;
 import critter2.checks.CheckFunctionLengthByLines;
 import critter2.checks.CheckFunctionNaming;
 import critter2.checks.CheckFunctionNumber;
+import critter2.checks.CheckGoTos;
 import critter2.checks.CheckLoop;
 
 /**
@@ -1269,10 +1270,9 @@ public class Critter {
         dt.checkFunctionParams();
         dt.checkFileLength();
         dt.checkSwitchHasDefaultCase();
-        dt.checkSwitchCases();
         
+        dt.checkSwitchCases();
         dt.checkStructHasComment();
-        dt.checkGoTos();
         dt.checkMagicNumbers();
         dt.checkVariableName();
         //dt.checkFunctionLengthByStatement();
@@ -1286,7 +1286,8 @@ public class Critter {
         		new CheckFunctionLengthByLines(program),
         		new CheckFunctionNumber(program), 
         		new CheckFunctionCommentValid(program),
-        		new CheckAsserts(program)
+        		new CheckAsserts(program),
+        		new CheckGoTos(program)
         };
         
         for (CritterCheck check : checks)
