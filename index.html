@@ -1,53 +1,18 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Critter2 by alicek112</title>
+---
+layout: default
+title: Critter2 by alicek112
+---
+<section>
+  <h1>critter2</h1>
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-  </head>
-  <body>
-    <div class="wrapper">
-      <header>
-        <h1 class="header">Critter2</h1>
-        <p class="header">C style checking tool aimed at Princeton University&#39;s course COS217: Introduction to Programming Systems</p>
+  <p>
+    <a href="https://travis-ci.org/alicek112/critter2"><img src="https://travis-ci.org/alicek112/critter2.svg?branch=master" alt="travis badge"></a>
+    C style checking tool aimed at Princeton University's course COS217: Introduction to Programming Systems
+  </p>
 
-        <ul>
-          <li class="download"><a class="buttons" href="https://github.com/alicek112/critter2/zipball/master">Download ZIP</a></li>
-          <li class="download"><a class="buttons" href="https://github.com/alicek112/critter2/tarball/master">Download TAR</a></li>
-          <li><a class="buttons github" href="https://github.com/alicek112/critter2">View On GitHub</a></li>
-        </ul>
+  {% for post in site.posts %}
+  <h1>{{ post.title }}</h1>
+  {{ post.content }}
+  {% endfor %}
+</section>
 
-        <p class="header">This project is maintained by <a class="header name" href="https://github.com/alicek112">alicek112</a></p>
-
-
-      </header>
-      <section>
-        <h1>
-<a name="critter2" class="anchor" href="#critter2"><span class="octicon octicon-link"></span></a>critter2</h1>
-
-<p><a href="https://travis-ci.org/alicek112/critter2"><img src="https://travis-ci.org/alicek112/critter2.svg?branch=master" alt="travis badge"></a>
-C style checking tool aimed at Princeton University's course COS217: Introduction to Programming Systems</p>
-
-<h1>
-<a name="building" class="anchor" href="#building"><span class="octicon octicon-link"></span></a>Building</h1>
-
-<div class="highlight highlight-bash"><pre><span class="nv">$ </span>git clone https://github.com/alicek112/critter2
-<span class="nv">$ </span>./gradlew
-</pre></div>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		
-  </body>
-</html>
