@@ -41,6 +41,7 @@ import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
 import critter2.checks.CheckAsserts;
 import critter2.checks.CheckBeginningComment;
+import critter2.checks.CheckFileLength;
 import critter2.checks.CheckFunctionCommentValid;
 import critter2.checks.CheckFunctionHasEnoughComments;
 import critter2.checks.CheckFunctionLengthByLines;
@@ -50,6 +51,8 @@ import critter2.checks.CheckFunctionParams;
 import critter2.checks.CheckGlobalHasComment;
 import critter2.checks.CheckGoTos;
 import critter2.checks.CheckLoop;
+import critter2.checks.CheckSwitchHasDefaultCase;
+import critter2.checks.CheckSwitchCases;
 
 /**
 * Implements the command line parser and controls pass ordering.
@@ -1268,10 +1271,6 @@ public class Critter {
         System.err.println();
         
         // Checks begin here.
-        dt.checkFileLength();
-        dt.checkSwitchHasDefaultCase();
-        
-        dt.checkSwitchCases();
         dt.checkStructHasComment();
         dt.checkMagicNumbers();
         dt.checkVariableName();
@@ -1291,6 +1290,9 @@ public class Critter {
         		new CheckFunctionHasEnoughComments(program), 
         		new CheckGlobalHasComment(program), 
         		new CheckFunctionParams(program),
+        		new CheckFileLength(program),
+        		new CheckSwitchHasDefaultCase(program),
+        		new CheckSwitchCases(program),
         };
         
         for (CritterCheck check : checks)
