@@ -82,7 +82,7 @@ def main():
     # Execute Cetus to (1) parse the line-numbered .c files that are
     # in TEMP_DIR (placing the resulting files in the ./cetus_output
     # directory), and (2) write its critique to stdout.
-    call('java -cp "' + CPATH + '" cetus.exec.Critter ' + args, shell=True)
+    call('java -cp "' + CPATH + '" critter2.Critter ' + args, shell=True)
 
     # Delete the temporary directories.
     rmtree('./critTer_bak')

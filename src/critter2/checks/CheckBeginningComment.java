@@ -2,7 +2,6 @@ package critter2.checks;
 
 import critter2.CritterCheck;
 
-import cetus.hir.AnnotationDeclaration;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.PreAnnotation;
 import cetus.hir.Program;

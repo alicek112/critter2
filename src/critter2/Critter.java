@@ -42,9 +42,12 @@ import cetus.hir.VariableDeclaration;
 import critter2.checks.CheckAsserts;
 import critter2.checks.CheckBeginningComment;
 import critter2.checks.CheckFunctionCommentValid;
+import critter2.checks.CheckFunctionHasEnoughComments;
 import critter2.checks.CheckFunctionLengthByLines;
 import critter2.checks.CheckFunctionNaming;
 import critter2.checks.CheckFunctionNumber;
+import critter2.checks.CheckFunctionParams;
+import critter2.checks.CheckGlobalHasComment;
 import critter2.checks.CheckGoTos;
 import critter2.checks.CheckLoop;
 
@@ -1265,9 +1268,6 @@ public class Critter {
         System.err.println();
         
         // Checks begin here.
-        dt.checkFunctionHasEnoughComments();
-        dt.checkGlobalHasComment();
-        dt.checkFunctionParams();
         dt.checkFileLength();
         dt.checkSwitchHasDefaultCase();
         
@@ -1287,7 +1287,10 @@ public class Critter {
         		new CheckFunctionNumber(program), 
         		new CheckFunctionCommentValid(program),
         		new CheckAsserts(program),
-        		new CheckGoTos(program)
+        		new CheckGoTos(program), 
+        		new CheckFunctionHasEnoughComments(program), 
+        		new CheckGlobalHasComment(program), 
+        		new CheckFunctionParams(program),
         };
         
         for (CritterCheck check : checks)
