@@ -8,15 +8,15 @@ typedef int* __WAIT_STATUS;
 #pragma critTer:4:../test/resources/fileLength.c:
 
 #pragma critTer:5:../test/resources/fileLength.c:
-
+struct blah {
 #pragma critTer:6:../test/resources/fileLength.c:
-
+	int size;	
 #pragma critTer:7:../test/resources/fileLength.c:
-
+	/* this field has a comment */
 #pragma critTer:8:../test/resources/fileLength.c:
-
+	int depth;
 #pragma critTer:9:../test/resources/fileLength.c:
-
+}
 #pragma critTer:10:../test/resources/fileLength.c:
 
 #pragma critTer:11:../test/resources/fileLength.c:

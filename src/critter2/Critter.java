@@ -51,6 +51,7 @@ import critter2.checks.CheckFunctionParams;
 import critter2.checks.CheckGlobalHasComment;
 import critter2.checks.CheckGoTos;
 import critter2.checks.CheckLoop;
+import critter2.checks.CheckStructHasComment;
 import critter2.checks.CheckSwitchHasDefaultCase;
 import critter2.checks.CheckSwitchCases;
 
@@ -1271,7 +1272,6 @@ public class Critter {
         System.err.println();
         
         // Checks begin here.
-        dt.checkStructHasComment();
         dt.checkMagicNumbers();
         dt.checkVariableName();
         //dt.checkFunctionLengthByStatement();
@@ -1293,6 +1293,7 @@ public class Critter {
         		new CheckFileLength(program),
         		new CheckSwitchHasDefaultCase(program),
         		new CheckSwitchCases(program),
+        		new CheckStructHasComment(program),
         };
         
         for (CritterCheck check : checks)
