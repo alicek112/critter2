@@ -1,3 +1,9 @@
+/*
+ * Check if loop length exceeds a maximum line length (MAX_LOOP_LENGTH).
+ * 
+ * Created by Alice Kroutikova '15
+ */
+
 package critter2.checks;
 
 import critter2.CritterCheck;
@@ -15,10 +21,16 @@ public class CheckLoop extends CritterCheck {
 	// COS217 maximum loop length
     private static final int MAX_LOOP_LENGTH = 35;
 	
+    /*
+     * Constructor used for testing.
+     */
 	public CheckLoop(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/*
+	 * Main constructor used in Critter.java
+	 */
 	public CheckLoop(Program program) {
 		super(program);
 	}
@@ -28,6 +40,7 @@ public class CheckLoop extends CritterCheck {
     	DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+    	// Traverse tree looking for flaws
     	while (dfs.hasNext()) {
     		Traversable t = dfs.next();
     		
@@ -47,7 +60,8 @@ public class CheckLoop extends CritterCheck {
     			while (ldfs.hasNext()) {
     				Traversable st = ldfs.next();
     				
-    				if (st instanceof AnnotationStatement || st instanceof PreAnnotation) {
+    				// counts the pragmas (from annotating script) indicating line numbers in the loop
+    				if (st instanceof PreAnnotation && st.toString().startsWith("#pragma critTer")) {
     					looplinecount++;
     				}
     			}

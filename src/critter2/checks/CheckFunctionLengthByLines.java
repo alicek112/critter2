@@ -1,8 +1,14 @@
+/*
+ * Checks if a function length exceeds a maximum length (MAX_FUNCTION_LENGTH).
+ * 
+ * Created by Alice Kroutikova '15.
+ */
+
 package critter2.checks;
 
 import critter2.CritterCheck;
-
 import cetus.hir.DepthFirstIterator;
+import cetus.hir.PreAnnotation;
 import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Statement;
@@ -13,11 +19,17 @@ public class CheckFunctionLengthByLines extends CritterCheck {
 	// COS217 maximum function length
     private int MAX_FUNCTION_LENGTH = 140;
 
+    /*
+     * Constructor used for testing.
+     */
 	public CheckFunctionLengthByLines(Program program,
 			ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/*
+	 * General constructor used by Critter.java.
+	 */
 	public CheckFunctionLengthByLines(Program program) {
 		super(program);
 	}
@@ -27,6 +39,7 @@ public class CheckFunctionLengthByLines extends CritterCheck {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree
 		while (dfs.hasNext()) {
     		Traversable t = dfs.next();
     		
@@ -37,16 +50,21 @@ public class CheckFunctionLengthByLines extends CritterCheck {
     			}
     		}
     		
+    		// if node is a function (Procedure), determine its linecount
     		else if (t instanceof Procedure) {
     			Statement s = ((Procedure) t).getBody();
+    			int looplinecount = 0;
+    			
+    			// Traverse the children of the function to count its lines
     			DepthFirstIterator<Traversable> ldfs = 
     					new DepthFirstIterator<Traversable>(s);
     			
-    			int looplinecount = 0;
     			while (ldfs.hasNext()) {
     				Traversable st = ldfs.next();
     				
-    				if (st.toString().startsWith("#pragma critTer")) {
+    				// Count pragmas inserted in the annotating script that indicate line numbers
+    				if (st instanceof PreAnnotation && st.toString().startsWith("#pragma critTer")) {
+    					System.err.println(st.toString());
     					looplinecount++;
     				}
     			}

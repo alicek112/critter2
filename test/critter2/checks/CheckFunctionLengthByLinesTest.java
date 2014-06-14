@@ -19,9 +19,9 @@ public class CheckFunctionLengthByLinesTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,"\n../../test/resources/functionLength.c: line 1: low priority: \nA function " +
-				"should consist of fewer than 140 lines;\n this function consists of 294 lines; " +
-				"consider refactoring\n");
+		tr.assertErrorEquals(0,"\n../../test/resources/functionLength.c: line 1: low priority: "
+				+ "\nA function should consist of fewer than 140 lines;"
+				+ "\n this function consists of 147 lines; consider refactoring\n");
 		
 	}
 }
