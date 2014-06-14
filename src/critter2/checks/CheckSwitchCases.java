@@ -1,3 +1,9 @@
+/*
+ * Warns if a switch case is missing a break (or return) statement.
+ * 
+ * Created by Alice Kroutikova '15.
+ */
+
 package critter2.checks;
 
 import java.util.List;
@@ -10,10 +16,16 @@ import critter2.CritterCheck;
 
 public class CheckSwitchCases extends CritterCheck {
 
+	/*
+	 * Constructor used in testing.
+	 */
 	public CheckSwitchCases(Program program, ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/*
+	 * General constructor used in Critter.java.
+	 */
 	public CheckSwitchCases(Program program) {
 		super(program);
 	}
@@ -23,6 +35,7 @@ public class CheckSwitchCases extends CritterCheck {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree looking for Switch Statement nodes.
     	while (dfs.hasNext()) {
     		Traversable t = dfs.next();
     		
@@ -36,7 +49,6 @@ public class CheckSwitchCases extends CritterCheck {
     		else if (t instanceof SwitchStatement) {
     			
     			Traversable body = ((SwitchStatement) t).getBody();
-    			
     			List<Traversable> list = body.getChildren();
     			
     			boolean caseHasBreak = true;

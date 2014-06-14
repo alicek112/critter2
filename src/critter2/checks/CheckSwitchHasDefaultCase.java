@@ -1,5 +1,7 @@
 /*
+ * Warns if a switch is missing a default case.
  * 
+ * Created by Alice Kroutikova '15.
  */
 
 package critter2.checks;
@@ -13,11 +15,17 @@ import critter2.CritterCheck;
 
 public class CheckSwitchHasDefaultCase extends CritterCheck {
 
+	/*
+	 * Constructor used in testing.
+	 */
 	public CheckSwitchHasDefaultCase(Program program,
 			ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/*
+	 * General constructor used in Critter.java.
+	 */
 	public CheckSwitchHasDefaultCase(Program program) {
 		super(program);
 	}
@@ -27,6 +35,7 @@ public class CheckSwitchHasDefaultCase extends CritterCheck {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree looking for switch statements (SwitchStatement node).
     	while (dfs.hasNext()) {
     		Traversable t = dfs.next();
     		
@@ -42,8 +51,8 @@ public class CheckSwitchHasDefaultCase extends CritterCheck {
     					new DepthFirstIterator<Traversable>(t);
     			boolean hasDefault = false;
     			
+    			// Traverses tree rooted at switch statement, looking for default.
     			while (sdfs.hasNext()) {
-    				
     				Traversable s = sdfs.next();
     				if (s instanceof Default)
     					hasDefault = true;

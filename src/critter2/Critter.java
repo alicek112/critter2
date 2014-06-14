@@ -22,7 +22,6 @@ import cetus.hir.ClassDeclaration;
 import cetus.hir.CompoundStatement;
 import cetus.hir.DFIterator;
 import cetus.hir.Declaration;
-import cetus.hir.Default;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.Enumeration;
 import cetus.hir.FlatIterator;
@@ -35,7 +34,6 @@ import cetus.hir.Loop;
 import cetus.hir.PreAnnotation;
 import cetus.hir.Procedure;
 import cetus.hir.Program;
-import cetus.hir.Statement;
 import cetus.hir.SwitchStatement;
 import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
@@ -55,8 +53,8 @@ import critter2.checks.CheckLoop;
 import critter2.checks.CheckMagicNumbers;
 import critter2.checks.CheckNesting;
 import critter2.checks.CheckStructHasComment;
-import critter2.checks.CheckSwitchHasDefaultCase;
 import critter2.checks.CheckSwitchCases;
+import critter2.checks.CheckSwitchHasDefaultCase;
 import critter2.checks.CheckVariableName;
 
 /**
@@ -71,21 +69,10 @@ public class Critter {
     
 	private final Program program;
 	
-    // COS217 maximum loop length
-    private int MAX_LOOP_LENGTH = 35;
-    // COS217 maximum function length
-    private int MAX_FUNCTION_LENGTH = 140;
     // COS217 maximum function length by statements
     private int MAX_FUNCTION_STATEMENT_LENGTH = 50;
     // COS217 maximum nesting level
     private int MAX_NESTING = 3;
-    // COS217 maximum function number per file
-    private int MAX_FUNCTION_NUMBER = 15;
-    // COS217 maximum number of parameters per function
-    private int MAX_PARAMETER_NUMBER = 7;
-    // COS217 maximum discrepancy between number of local comments
-    // and the number of elements that should have comments
-    private int MAX_LOCAL_COMMENT_DISCREPANCY = 5;
     // COS217 maximum file length in lines.
     private int MAX_FILE_LENGTH = 500;
     // COS217 acceptable variable names that are shorter than 
@@ -139,46 +126,6 @@ public class Critter {
     }
     
     
-    
-    /*
-     * Checks that all switch statements have default cases.
-     */
-    public void checkSwitchHasDefaultCase() {
-    	DepthFirstIterator<Traversable> dfs = 
-    			new DepthFirstIterator<Traversable>(program);
-    	
-    	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
-    		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof SwitchStatement) {
-    			DepthFirstIterator<Traversable> sdfs = 
-    					new DepthFirstIterator<Traversable>(t);
-    			boolean hasDefault = false;
-    			
-    			while (sdfs.hasNext()) {
-    				
-    				Traversable s = sdfs.next();
-    				if (s instanceof Default)
-    					hasDefault = true;
-    			}
-    			
-    			if (!hasDefault) {
-    				System.err.printf("%n%s: line %d: low priority: " +
-    						"%nA switch statement should have a default " +
-    						"case%n",
-    						getFilename(t), getLineNumber(t));
-    			}
-    		}
-    		
-    	}
-    }
     
     /*
      * Checks that all switch cases have a break or return statement.
@@ -772,15 +719,6 @@ public class Critter {
     	return nonPragmaPrev;
     }
     
-    /*
-     * Returns previous node in parse tree that is a pragma annotation
-     */
-    private Traversable getPreviousPragma(Traversable current) {
-    	Traversable pragmaPrev = getPrevious(current);
-    	while (!pragmaPrev.toString().startsWith("#pragma"))
-    		pragmaPrev = getPrevious(pragmaPrev);
-    	return pragmaPrev;
-    }
     
     /*
      * Returns the previous node in parse tree.
@@ -825,8 +763,6 @@ public class Critter {
     	}
     	
     	Program program = (new CritterDriver()).parseProgram(args[0]);
-    	
-    	Critter dt = new Critter(program);
         
         System.err.println("critTer2 warnings start here");
         System.err.println("----------------------------");
