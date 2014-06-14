@@ -1,14 +1,3 @@
-/*
- * Critter.java
- * 
- * Created by Alice Kroutikova '15, based on the Driver.java code of 
- * CETUS, under the advising of Dr. Robert Dondero.
- * 
- * May 6, 2014
- * 
- */
-
-
 package critter2;
 
 import cetus.hir.Program;
@@ -33,9 +22,15 @@ import critter2.checks.CheckSwitchHasDefaultCase;
 import critter2.checks.CheckVariableName;
 
 /**
+ * The main class of Critter. Parses command line,
+ * builds program tree and calls all necessary checks.
  * 
+ * Created by Alice Kroutikova '15, based on the Driver.java code of 
+ * CETUS, under the advising of Dr. Robert Dondero.
  * 
- * @author alicek112
+ * May 6, 2014
+ * 
+ * @author Alice Kroutikova '15
  *
  */
 public class Critter {
