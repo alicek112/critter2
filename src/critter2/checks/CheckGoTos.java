@@ -33,9 +33,6 @@ public class CheckGoTos extends CritterCheck {
 		super(program);
 	}
 
-	/**
-	 * Implements check and reports warnings.
-	 */
 	@Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 

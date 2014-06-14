@@ -1,10 +1,3 @@
-/*
- * Warns if function comment fails to mention each parameter 
- * by name or explain what the function returns.
- * Also warns if a function is missing a comment.
- * 
- * Created by Alice Kroutikova '15.
- */
 package critter2.checks;
 
 import java.util.ArrayList;
@@ -18,23 +11,35 @@ import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
 
+/**
+ * Warns if function comment fails to mention each parameter 
+ * by name or explain what the function returns.
+ * Also warns if a function is missing a comment.
+ * 
+ * @author Alice Kroutikova '15
+ *
+ */
 public class CheckFunctionCommentValid extends CritterCheck {
 
-	/*
-	 * Constructor used in testing.
-	 */
-	public CheckFunctionCommentValid(Program program,
-			ErrorReporter errorReporter) {
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckFunctionCommentValid(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
-
-	/* 
-	 * General constructor used in Critter.java
+	
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckFunctionCommentValid(Program program) {
 		super(program);
 	}
-	
+
 	@Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 
@@ -42,16 +47,9 @@ public class CheckFunctionCommentValid extends CritterCheck {
     	
     	// Traverse parse tree looking for functions (Procedure nodes).
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoStdInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof Procedure) {
+    		if (t instanceof Procedure) {
     			Procedure function = (Procedure) t;
     			
 	    		List<?> list = function.getReturnType();

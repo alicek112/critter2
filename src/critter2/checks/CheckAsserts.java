@@ -3,15 +3,13 @@ package critter2.checks;
 import java.util.ArrayList;
 import java.util.List;
 
-import critter2.CritterCheck;
-
-import cetus.hir.DFIterator;
 import cetus.hir.Declaration;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.IDExpression;
 import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
+import critter2.CritterCheck;
 
 /**
  * Warns if pointer parameters not validated by an assert
@@ -40,9 +38,6 @@ public class CheckAsserts extends CritterCheck {
 		super(program);
 	}
 
-	/**
-	 * Implements check and reports warnings.
-	 */	
 	@Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = new DepthFirstIterator<Traversable>(program);

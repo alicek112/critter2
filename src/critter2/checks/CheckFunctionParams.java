@@ -11,20 +11,31 @@ import cetus.hir.Program;
 import cetus.hir.Traversable;
 import critter2.CritterCheck;
 
+/**
+ * Warns if a function has too many parameters (MAX_PARAMETER_NUMBER).
+ * 
+ * @author alicek112
+ *
+ */
 public class CheckFunctionParams extends CritterCheck {
 	
 	 // COS217 maximum number of parameters per function
     private static final int MAX_PARAMETER_NUMBER = 7;
 
-    /*
+    /**
      * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
      */
-	public CheckFunctionParams(Program program, ErrorReporter errorReporter) {
+	public CheckFunctionParams(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
-	 * General constructor used by Critter.java.
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckFunctionParams(Program program) {
 		super(program);
@@ -38,16 +49,9 @@ public class CheckFunctionParams extends CritterCheck {
 		// Traverse parse tree looking for functions (Procedure nodes)
 		// to examine parameters
 		while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoInclude(dfs);
     		
-    		// skips all included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof Procedure) {
+    		if (t instanceof Procedure) {
     			int paramNum = ((Procedure) t).getNumParameters();
     			
     			if (paramNum > MAX_PARAMETER_NUMBER) {

@@ -1,14 +1,3 @@
-/*
- * Warns if functions don’t have enough local comments.
- * 
- * Assumes that if, while, for, do while and switch elements should all have comments.
- * Checks the number of local comments with the number of those 
- * elements, and throws a warning if the discrepancy between the two 
- * is greater than MAX_LOCAL_COMMENT_DISCREPANCY.
- * 
- * Created by Alice Kroutikova '15.
- */
-
 package critter2.checks;
 
 import cetus.hir.AnnotationStatement;
@@ -21,22 +10,37 @@ import cetus.hir.SwitchStatement;
 import cetus.hir.Traversable;
 import critter2.CritterCheck;
 
+/**
+ * Warns if functions don’t have enough local comments.
+ * 
+ * Assumes that if, while, for, do while and switch elements should all have comments.
+ * Checks the number of local comments with the number of those 
+ * elements, and throws a warning if the discrepancy between the two 
+ * is greater than MAX_LOCAL_COMMENT_DISCREPANCY.
+ * 
+ * @author Alice Kroutikova '15
+ *
+ */
 public class CheckFunctionHasEnoughComments extends CritterCheck {
 
 	// COS217 maximum discrepancy between number of local comments
     // and the number of elements that should have comments
     private final static int MAX_LOCAL_COMMENT_DISCREPANCY = 5;
 	
-    /*
-     * Constructor used in testing.
+    /**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
      */
-	public CheckFunctionHasEnoughComments(Program program,
-			ErrorReporter errorReporter) {
+	public CheckFunctionHasEnoughComments(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
-	 * General constructor used in Critter.java.
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckFunctionHasEnoughComments(Program program) {
 		super(program);
@@ -49,16 +53,9 @@ public class CheckFunctionHasEnoughComments extends CritterCheck {
     	
 		// Traverse parse tree looking for functions (Procedure nodes).
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof Procedure) {
+    		if (t instanceof Procedure) {
     			DepthFirstIterator<Traversable> functiondfs = 
     					new DepthFirstIterator<Traversable>(t);
     			

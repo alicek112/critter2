@@ -1,13 +1,11 @@
 package critter2.checks;
 
-import critter2.CritterCheck;
-
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.Loop;
-import cetus.hir.PreAnnotation;
 import cetus.hir.Program;
 import cetus.hir.Statement;
 import cetus.hir.Traversable;
+import critter2.CritterCheck;
 
 /**
  * Warn if loop length exceeds a maximum line length (MAX_LOOP_LENGTH).
@@ -39,9 +37,6 @@ public class CheckLoop extends CritterCheck {
 		super(program);
 	}
 
-	/**
-	 * Implements check and reports warnings.
-	 */
 	@Override
 	public void check() {
     	DepthFirstIterator<Traversable> dfs = 

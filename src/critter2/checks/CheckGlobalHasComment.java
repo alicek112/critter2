@@ -1,13 +1,3 @@
-/*
- * Warns if global variables are missing comments.
- * 
- * Comments must be either on the line immediately preceding the global 
- * variable, or with at most one blank line between the comment and 
- * the global variable.
- * 
- * Created by Alice Kroutikova '15.
- */
-
 package critter2.checks;
 
 import cetus.hir.AnnotationDeclaration;
@@ -21,17 +11,32 @@ import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
 import critter2.CritterCheck;
 
+/**
+ * Warns if global variables are missing comments.
+ * 
+ * Comments must be either on the line immediately preceding the global 
+ * variable, or with at most one blank line between the comment and 
+ * the global variable.
+ * 
+ * @author Alice Kroutikova '15
+ *
+ */
 public class CheckGlobalHasComment extends CritterCheck {
 
-	/*
-	 * Constructor used in testing.
-	 */
-	public CheckGlobalHasComment(Program program, ErrorReporter errorReporter) {
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckGlobalHasComment(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
-	 * General constructor used in Critter.java.
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckGlobalHasComment(Program program) {
 		super(program);
@@ -47,16 +52,9 @@ public class CheckGlobalHasComment extends CritterCheck {
 
     	// Traverse parse tree (skipping functions and their contents).
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoStdInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof VariableDeclaration 
+    		if (t instanceof VariableDeclaration 
     				|| t instanceof Enumeration 
     				|| t instanceof ClassDeclaration) {
     			

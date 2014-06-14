@@ -1,8 +1,3 @@
-/*
- * Warns if number of functions in a file exceeds maximum number (MAX_FUNCTION_NUMBER).
- * 
- * Created by Alice Kroutikova '15.
- */
 package critter2.checks;
 
 import critter2.CritterCheck;
@@ -12,20 +7,31 @@ import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
 
+/**
+ * Warns if number of functions in a file exceeds maximum number (MAX_FUNCTION_NUMBER).
+ * 
+ * @author Alice Kroutikova '15.
+ *
+ */
 public class CheckFunctionNumber extends CritterCheck {
 	
 	// COS217 maximum function number per file
     private static final int MAX_FUNCTION_NUMBER = 15;
 
-    /*
-     * Constructor used in testing.
+    /**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
      */
-	public CheckFunctionNumber(Program program, ErrorReporter errorReporter) {
+	public CheckFunctionNumber(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
-	 * General constructor used in Critter.java.
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckFunctionNumber(Program program) {
 		super(program);
@@ -41,17 +47,10 @@ public class CheckFunctionNumber extends CritterCheck {
 		
 		// Traverse parse tree counting functions (Procedures)
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoInclude(dfs);
     		
     		if (firstNode == null)
     			firstNode = t;
-    		
-    		// skips all the included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
     		
     		if (t instanceof Procedure) {
     			functioncount++;

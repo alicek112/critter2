@@ -1,9 +1,3 @@
-/*
- * Warns if a switch is missing a default case.
- * 
- * Created by Alice Kroutikova '15.
- */
-
 package critter2.checks;
 
 import cetus.hir.Default;
@@ -13,18 +7,28 @@ import cetus.hir.SwitchStatement;
 import cetus.hir.Traversable;
 import critter2.CritterCheck;
 
+/**
+ * Warns if a switch is missing a default case.
+ * 
+ * @author alicek112
+ *
+ */
 public class CheckSwitchHasDefaultCase extends CritterCheck {
 
-	/*
-	 * Constructor used in testing.
-	 */
-	public CheckSwitchHasDefaultCase(Program program,
-			ErrorReporter errorReporter) {
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckSwitchHasDefaultCase(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
-	 * General constructor used in Critter.java.
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckSwitchHasDefaultCase(Program program) {
 		super(program);
@@ -37,16 +41,9 @@ public class CheckSwitchHasDefaultCase extends CritterCheck {
     	
 		// Traverse parse tree looking for switch statements (SwitchStatement node).
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof SwitchStatement) {
+    		if (t instanceof SwitchStatement) {
     			DepthFirstIterator<Traversable> sdfs = 
     					new DepthFirstIterator<Traversable>(t);
     			boolean hasDefault = false;

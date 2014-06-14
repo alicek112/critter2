@@ -1,9 +1,3 @@
-/*
- * Warns if there is no comment in the beginning of each file.
- * 
- * Created by Alice Kroutikova '15.
- */
-
 package critter2.checks;
 
 import critter2.CritterCheck;
@@ -13,17 +7,28 @@ import cetus.hir.PreAnnotation;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
 
+/**
+ * Warns if there is no comment in the beginning of each file.
+ * 
+ * @author alicek112
+ *
+ */
 public class CheckBeginningComment extends CritterCheck {
 	
-	/*
-	 * Constructor used in testing.
-	 */
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
 	public CheckBeginningComment(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
-	 * General constructor used in Critter.java.
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckBeginningComment(Program program) {
 		super(program);
@@ -61,6 +66,8 @@ public class CheckBeginningComment extends CritterCheck {
     		t = dfs.next();
     		
     		if (t.toString().startsWith("#pragma critTer:startStudentInclude")) {
+    			// If two lines in a row begin with #pragma, then the first line 
+    	    	// of student code is either blank or a pragma.
     			while (!(t.toString().startsWith("#pragma critTer:1:")))
     	    		t = dfs.next();
     			Traversable n = dfs.next();

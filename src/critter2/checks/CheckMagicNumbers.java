@@ -57,10 +57,7 @@ public class CheckMagicNumbers extends CritterCheck {
         }
     }
 	
-    /**
-     * Implements check and reports warnings.
-     */
-	@Override
+    @Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
