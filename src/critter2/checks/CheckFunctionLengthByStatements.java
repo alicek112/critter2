@@ -13,6 +13,11 @@ import cetus.hir.SwitchStatement;
 import cetus.hir.Traversable;
 import critter2.CritterCheck;
 
+/**
+ * Work in progress...
+ * @author alicek112
+ *
+ */
 public class CheckFunctionLengthByStatements extends CritterCheck {
 	
 	// COS217 maximum function length by statements
