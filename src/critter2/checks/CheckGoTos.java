@@ -6,32 +6,46 @@ import cetus.hir.Program;
 import cetus.hir.Traversable;
 import critter2.CritterCheck;
 
+/**
+ * Warns against using goto statements. 
+ * 
+ * @author Alice Kroutikova '15.
+ *
+ */
 public class CheckGoTos extends CritterCheck {
 
-	public CheckGoTos(Program program, ErrorReporter errorReporter) {
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckGoTos(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
+	 */
 	public CheckGoTos(Program program) {
 		super(program);
 	}
 
+	/**
+	 * Implements check and reports warnings.
+	 */
 	@Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree looking for goto statements.
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof GotoStatement) {
+    		if (t instanceof GotoStatement) {
     			reportErrorPos(t, "high priority: " +
     					"%nNever use GOTO statements%n");
     		}

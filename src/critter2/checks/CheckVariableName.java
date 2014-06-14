@@ -11,6 +11,13 @@ import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
 import critter2.CritterCheck;
 
+/**
+ * Checks that variable names are longer than the MIN_VAR_NAME_LENGTH, 
+ * with the exception of ACCEPTABLE_VAR_NAMES.
+ * 
+ * @author Alice Kroutikova '15
+ *
+ */
 public class CheckVariableName extends CritterCheck {
 	
 	// COS217 acceptable variable names that are shorter than 
@@ -33,30 +40,39 @@ public class CheckVariableName extends CritterCheck {
     // COS217 minimum variable name length
     private final static int MIN_VAR_NAME_LENGTH = 3;
 
-	public CheckVariableName(Program program, ErrorReporter errorReporter) {
+    /**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckVariableName(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
+	 */
 	public CheckVariableName(Program program) {
 		super(program);
 	}
 
+	/**
+	 * Implements check and reports warnings.
+	 */
 	@Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoStdInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof VariableDeclaration 
+    		// Examines variable declarations (that are not inserted into 
+    		// code during preprocessing)
+    		if (t instanceof VariableDeclaration 
     				&& !t.getParent().toString().startsWith("__")) {
 
     			
@@ -73,6 +89,7 @@ public class CheckVariableName extends CritterCheck {
     			}
     		}
     		
+    		// Examines enums for variable name lengths.
     		else if (t instanceof Enumeration) {
     			List<IDExpression> vars = ((Enumeration) t).getDeclaredIDs();
     			for (IDExpression x : vars) {

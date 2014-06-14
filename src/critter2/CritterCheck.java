@@ -11,7 +11,10 @@
 
 package critter2;
 
+import java.util.Iterator;
+
 import cetus.hir.DepthFirstIterator;
+import cetus.hir.PreAnnotation;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
 
@@ -124,7 +127,61 @@ public abstract class CritterCheck {
     	
     	return prev;
     }
+    
+    public int linecount(Traversable node) {
+    	DepthFirstIterator<Traversable> ldfs = 
+				new DepthFirstIterator<Traversable>(node);
+		
+		int linecount = 0;
+		while (ldfs.hasNext()) {
+			Traversable t = ldfs.next();
+			
+			// counts the pragmas (from annotating script) indicating line numbers in the loop
+			if (t instanceof PreAnnotation 
+					&& t.toString().startsWith("#pragma critTer")
+					&& !t.toString().contains("Include")) {
+				linecount++;
+			}
+		}
+		
+		return linecount;
+    }
+    
+    public Traversable nextNoStdInclude(Iterator<Traversable> i) {
+    	if (!i.hasNext())
+    		return null;
+    	Traversable next = i.next();
+    	
+    	if (next.toString().startsWith("#pragma critTer:startStdInclude:")) {
+			while (!(next.toString().startsWith("#pragma critTer:endStdInclude:"))) {
+				next = i.next();
+			}
+		}
+    	
+    	return next;
+    }
+    
+    public Traversable nextNoInclude(Iterator<Traversable> i) {
+    	if (!i.hasNext())
+    		return null;
+    	Traversable next = i.next();
+    	
+    	if (next.toString().startsWith("#pragma critTer:startStdInclude:")) {
+			while (!(next.toString().startsWith("#pragma critTer:endStdInclude:"))) {
+				next = i.next();
+			}
+		}
+    	
+    	if (next.toString().startsWith("#pragma critTer:startStudentInclude:")) {
+			while (!(next.toString().startsWith("#pragma critTer:endStudentInclude:"))) {
+				next = i.next();
+			}
+		}
+    	
+    	return next;
+    }
 }
+
 
 class StandardErrorReporter implements CritterCheck.ErrorReporter {
 	public void reportError(String message, Object... args) {

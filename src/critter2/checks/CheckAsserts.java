@@ -13,35 +13,47 @@ import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
 
+/**
+ * Warns if pointer parameters not validated by an assert
+ * 
+ * @author Alice Kroutikova '15
+ *
+ */
 public class CheckAsserts extends CritterCheck {
 
-	public CheckAsserts(Program program, ErrorReporter errorReporter) {
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckAsserts(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
+	 */
 	public CheckAsserts(Program program) {
 		super(program);
 	}
 
+	/**
+	 * Implements check and reports warnings.
+	 */	
 	@Override
 	public void check() {
-		DFIterator<Traversable> dfs = new DFIterator<Traversable>(program);
+		DepthFirstIterator<Traversable> dfs = new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree looking for function nodes (Procedure)
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
-    		
-    		// skips all standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
+    		Traversable t = nextNoStdInclude(dfs);
     		
     		if (t instanceof Procedure) {
     			
-	    		DepthFirstIterator<Traversable> functiondfs = 
-	    				new DepthFirstIterator<Traversable>(t);
-	    		
+	    		// Keep list of parameters for the function
 	    		@SuppressWarnings("unchecked")
 				List<Declaration> params = ((Procedure) t).getParameters();
 	    		List<String> paramNames = new ArrayList<String>();
@@ -49,6 +61,7 @@ public class CheckAsserts extends CritterCheck {
 	    		for (Declaration p : params) {
 		    		List<IDExpression> declaredIDs = p.getDeclaredIDs();
 		    		for (IDExpression parameter : declaredIDs) {
+		    			// parameters formated as arrays
 		    			if (parameter.getParent().toString().contains("[]")) {
 		    				paramNames.add(parameter.toString());
 		    			}
@@ -60,8 +73,11 @@ public class CheckAsserts extends CritterCheck {
 		    	
 	    		}	
 		    	boolean[] hasAssert = new boolean[paramNames.size()];
-		    		
-		   		
+		    	
+		    	// Traverse parse tree rooted at function to determine if asserts
+		    	// are being called
+		    	DepthFirstIterator<Traversable> functiondfs = 
+	    				new DepthFirstIterator<Traversable>(t);
 		    	while (functiondfs.hasNext()) {
 		    		Traversable t2 = functiondfs.next();
 		    		
@@ -70,7 +86,6 @@ public class CheckAsserts extends CritterCheck {
 		   					if (t2.toString().contains(paramNames.get(i)))
 		   						hasAssert[i] = true;
 		   				}
-	    				
 	    			}	
 		    	}
 		    	

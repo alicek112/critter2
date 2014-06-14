@@ -9,35 +9,50 @@ import cetus.hir.Traversable;
 import cetus.hir.VariableDeclaration;
 import critter2.CritterCheck;
 
+/**
+ * Warns if a field in a struct lacks comments.
+ * 
+ * @author Alice Kroutikova '15.
+ *
+ */
 public class CheckStructHasComment extends CritterCheck {
 
-	public CheckStructHasComment(Program program, ErrorReporter errorReporter) {
+	/**
+     * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+	public CheckStructHasComment(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/**
+	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
+	 */
 	public CheckStructHasComment(Program program) {
 		super(program);
 	}
-
+	
+	/**
+	 * Implements check and reports warnings.
+	 */
 	@Override
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree looking for structs (ClassDeclaration nodes)
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoStdInclude(dfs);
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof ClassDeclaration) {
+    		if (t instanceof ClassDeclaration) {
     			DepthFirstIterator<Traversable> cdfs = 
     					new DepthFirstIterator<Traversable>(t);
     			
+    			// Traverse tree rooted at struct node to find fields of struct
     			while (cdfs.hasNext()) {
     				Traversable c = cdfs.next();
     			

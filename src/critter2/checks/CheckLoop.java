@@ -1,9 +1,3 @@
-/*
- * Warn if loop length exceeds a maximum line length (MAX_LOOP_LENGTH).
- * 
- * Created by Alice Kroutikova '15
- */
-
 package critter2.checks;
 
 import critter2.CritterCheck;
@@ -15,25 +9,39 @@ import cetus.hir.Program;
 import cetus.hir.Statement;
 import cetus.hir.Traversable;
 
+/**
+ * Warn if loop length exceeds a maximum line length (MAX_LOOP_LENGTH).
+ * 
+ * @author Alice Kroutikova '15.
+ *
+ */
 public class CheckLoop extends CritterCheck {
 	
 	// COS217 maximum loop length
     private static final int MAX_LOOP_LENGTH = 35;
 	
-    /*
+    /**
      * Constructor used for testing.
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
      */
 	public CheckLoop(Program program, CritterCheck.ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
-	/*
+	/**
 	 * Main constructor used in Critter.java
+	 * 
+	 * @param program the root node of the parse tree
 	 */
 	public CheckLoop(Program program) {
 		super(program);
 	}
 
+	/**
+	 * Implements check and reports warnings.
+	 */
 	@Override
 	public void check() {
     	DepthFirstIterator<Traversable> dfs = 
@@ -41,29 +49,11 @@ public class CheckLoop extends CritterCheck {
     	
     	// Traverse tree looking for flaws
     	while (dfs.hasNext()) {
-    		Traversable t = dfs.next();
+    		Traversable t = nextNoInclude(dfs); // skip all included header files
     		
-    		// skips all the standard included files
-    		if (t.toString().startsWith("#pragma critTer:startStdInclude:")) {
-    			while (!(t.toString().startsWith("#pragma critTer:endStdInclude:"))) {
-    				t = dfs.next();
-    			}
-    		}
-    		
-    		else if (t instanceof Loop) {
+    		if (t instanceof Loop) {
     			Statement s = ((Loop) t).getBody();
-    			DepthFirstIterator<Traversable> ldfs = 
-    					new DepthFirstIterator<Traversable>(s);
-    			
-    			int looplinecount = 0;
-    			while (ldfs.hasNext()) {
-    				Traversable st = ldfs.next();
-    				
-    				// counts the pragmas (from annotating script) indicating line numbers in the loop
-    				if (st instanceof PreAnnotation && st.toString().startsWith("#pragma critTer")) {
-    					looplinecount++;
-    				}
-    			}
+    			int looplinecount = linecount(s);
     			
     			if (looplinecount > MAX_LOOP_LENGTH) {
     				reportErrorPos(t, "low priority: " +
