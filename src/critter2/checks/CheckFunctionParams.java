@@ -1,3 +1,8 @@
+/*
+ * Warns if a function has too many parameters (MAX_PARAMETER_NUMBER).
+ * 
+ * Created by Alice Kroutikova '15.
+ */
 package critter2.checks;
 
 import cetus.hir.DepthFirstIterator;
@@ -11,10 +16,16 @@ public class CheckFunctionParams extends CritterCheck {
 	 // COS217 maximum number of parameters per function
     private static final int MAX_PARAMETER_NUMBER = 7;
 
+    /*
+     * Constructor used for testing.
+     */
 	public CheckFunctionParams(Program program, ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 	
+	/*
+	 * General constructor used by Critter.java.
+	 */
 	public CheckFunctionParams(Program program) {
 		super(program);
 	}
@@ -24,6 +35,8 @@ public class CheckFunctionParams extends CritterCheck {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
+		// Traverse parse tree looking for functions (Procedure nodes)
+		// to examine parameters
 		while (dfs.hasNext()) {
     		Traversable t = dfs.next();
     		

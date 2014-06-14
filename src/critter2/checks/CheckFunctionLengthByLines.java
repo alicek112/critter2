@@ -1,5 +1,5 @@
 /*
- * Checks if a function length exceeds a maximum length (MAX_FUNCTION_LENGTH).
+ * Warns if a function length exceeds a maximum length (MAX_FUNCTION_LENGTH).
  * 
  * Created by Alice Kroutikova '15.
  */
@@ -64,7 +64,6 @@ public class CheckFunctionLengthByLines extends CritterCheck {
     				
     				// Count pragmas inserted in the annotating script that indicate line numbers
     				if (st instanceof PreAnnotation && st.toString().startsWith("#pragma critTer")) {
-    					System.err.println(st.toString());
     					looplinecount++;
     				}
     			}

@@ -1,5 +1,5 @@
 /*
- * Check if loop length exceeds a maximum line length (MAX_LOOP_LENGTH).
+ * Warn if loop length exceeds a maximum line length (MAX_LOOP_LENGTH).
  * 
  * Created by Alice Kroutikova '15
  */
@@ -8,7 +8,6 @@ package critter2.checks;
 
 import critter2.CritterCheck;
 
-import cetus.hir.AnnotationStatement;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.Loop;
 import cetus.hir.PreAnnotation;

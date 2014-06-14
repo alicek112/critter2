@@ -1,7 +1,7 @@
 /*
- * Check if all functions in non-main modules have the same prefix.
+ * Warns if not all functions in non-main modules have the same prefix.
  * Princeton University's Introduction to Programming Systems
- * requires all functions to have the same prefix, separated with
+ * requires all functions to have the same prefix, separated by
  * an underscore (ie. prefix_Func1, prefix_Func2).
  * 
  * Created by Alice Kroutikova '15

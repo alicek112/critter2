@@ -1,3 +1,10 @@
+/*
+ * Warns if function comment fails to mention each parameter 
+ * by name or explain what the function returns.
+ * Also warns if a function is missing a comment.
+ * 
+ * Created by Alice Kroutikova '15.
+ */
 package critter2.checks;
 
 import java.util.ArrayList;
@@ -13,11 +20,17 @@ import cetus.hir.Traversable;
 
 public class CheckFunctionCommentValid extends CritterCheck {
 
+	/*
+	 * Constructor used in testing.
+	 */
 	public CheckFunctionCommentValid(Program program,
 			ErrorReporter errorReporter) {
 		super(program, errorReporter);
 	}
 
+	/* 
+	 * General constructor used in Critter.java
+	 */
 	public CheckFunctionCommentValid(Program program) {
 		super(program);
 	}
@@ -27,7 +40,7 @@ public class CheckFunctionCommentValid extends CritterCheck {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
     	
-    	
+    	// Traverse parse tree looking for functions (Procedure nodes).
     	while (dfs.hasNext()) {
     		Traversable t = dfs.next();
     		
@@ -49,6 +62,7 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	   			}
 	   			
 	   			Traversable p = getPreviousNonPragma(function);
+	   			
 	   			// main function doesn't need to be checked for parameter
 	   			// or return mentions in comment
 	   			if (function.getName().toString().compareTo("main") != 0) {
@@ -86,6 +100,8 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	    			}
 	   			}
 	   			
+	   			// All functions, including main functions, should have comments
+	   			// preceding them.
 	   			if (!(p instanceof PreAnnotation)) {
 		    		reportErrorPos(function, "high priority: " +
 		    				"\nA function definition should have a comment\n");		

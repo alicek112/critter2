@@ -1,3 +1,7 @@
+/*
+ * 
+ */
+
 package critter2.checks;
 
 import cetus.hir.Default;
