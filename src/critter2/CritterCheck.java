@@ -127,6 +127,8 @@ public abstract class CritterCheck {
     	Traversable nonPragmaPrev = getPrevious(current);
     	while (nonPragmaPrev.toString().startsWith("#pragma")) {
     		// skip over .h files
+    		if (nonPragmaPrev.toString().startsWith("#pragma critTer:endStudentInclude"))
+    			return null;
     		if (nonPragmaPrev.toString().startsWith("#pragma critTer:end")) {
     			while(!nonPragmaPrev.toString().startsWith("#pragma critTer:start"))
     				nonPragmaPrev = getPrevious(nonPragmaPrev);

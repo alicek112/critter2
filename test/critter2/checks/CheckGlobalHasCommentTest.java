@@ -22,4 +22,5 @@ public class CheckGlobalHasCommentTest {
 		tr.assertErrorEquals(0,  "\n../test/resources/functionCommentParam.c: line 1: high priority: "
 				+ "\nA comment should appear above each global variable.\n");
 	}
+	
 }

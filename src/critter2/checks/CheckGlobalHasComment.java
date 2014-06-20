@@ -5,6 +5,7 @@ import cetus.hir.AnnotationStatement;
 import cetus.hir.ClassDeclaration;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.Enumeration;
+import cetus.hir.PreAnnotation;
 import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.Traversable;
@@ -55,8 +56,7 @@ public class CheckGlobalHasComment extends CritterCheck {
     		Traversable t = nextNoStdInclude(dfs);
     		
     		if (t instanceof VariableDeclaration 
-    				|| t instanceof Enumeration 
-    				|| t instanceof ClassDeclaration) {
+    				|| t instanceof Enumeration ) {
     			
     			// typedef int * __ are the variables declared through C preprocessing,
     			// not in student code, and are therefore ignored.
@@ -65,9 +65,37 @@ public class CheckGlobalHasComment extends CritterCheck {
 	    			Traversable p = getPreviousNonPragma(t);
 	    			
 	    			if (!(p instanceof AnnotationStatement) 
-	    					&& !(p instanceof AnnotationDeclaration)) {
+	    					&& !(p instanceof AnnotationDeclaration)
+	    					&& !(p instanceof PreAnnotation)) {
+	    				
 	    				if (t.getParent().getParent() != null) {
 	    					if (!(t.getParent().getParent() instanceof VariableDeclaration)) {
+	    						
+			    				reportErrorPos(t, "high priority: " +
+			    						"%nA comment should appear above each " +
+			    						"global variable.%n");
+	    					}
+	    				}
+	    			}
+    			}
+    		}
+    		
+    		// CETUS considers fields of a struct that are also structs as
+    		// separate class declarations, this filters those nodes out
+    		if (t instanceof ClassDeclaration && t.getChildren() != null) {
+    			
+    			// typedef int * __ are the variables declared through C preprocessing,
+    			// not in student code, and are therefore ignored.
+    			if (!t.toString().startsWith("typedef int * __")) {
+    				
+	    			Traversable p = getPreviousNonPragma(t);
+	    			
+	    			if (!(p instanceof AnnotationStatement) 
+	    					&& !(p instanceof AnnotationDeclaration)
+	    					&& !(p instanceof PreAnnotation)) {
+	    				if (t.getParent().getParent() != null) {
+	    					if (!(t.getParent().getParent() instanceof VariableDeclaration)) {
+	    						
 			    				reportErrorPos(t, "high priority: " +
 			    						"%nA comment should appear above each " +
 			    						"global variable.%n");
