@@ -7,7 +7,7 @@ title: "Using CritTer2"
 Install and build CritTer2 through the following commands from the command-line, 
 in the directory you want CritTer2 installed:
 
-```java
+```bash
 $ git clone https://github.com/alicek112/critter2
 $ cd critter2
 $ ./gradlew
@@ -21,13 +21,13 @@ Then add it to your PATH:
 
 To run CritTer2 on all c files in the working directory:
 
-```java
+```bash
 $ critTer2 *.c
 ```
 
 To run CritTer2 on a specific file:
 
-```java
+```bash
 $ critTer2 filename.c
 ```
 
@@ -40,7 +40,7 @@ called from.
 You can change CritTer2 by editing the source code. To do this, go into the
 directory where CritTer2 is installed and then access the source code files:
 
-```java
+```bash
 $ cd critter2/src/critter2
 ```
 
