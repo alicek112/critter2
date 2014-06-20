@@ -13,6 +13,12 @@ $ cd critter2
 $ ./gradlew
 ```
 
+Creating Javadocs
+=======
+```bash
+$ ./gradlew javadoc
+```
+
 Resources
 ========
 [CritTer2 javadoc](http://alicek112.github.io/critter2/javadoc/)
