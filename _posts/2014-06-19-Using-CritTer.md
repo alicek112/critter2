@@ -15,7 +15,9 @@ $ ./gradlew
 
 Then add it to your PATH:
 
-     $ export PATH=.:$PATH
+```bash
+$ export PATH=.:$PATH
+```
 
 ## Run ##
 
