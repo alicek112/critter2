@@ -13,11 +13,13 @@ $ cd critter2
 $ ./gradlew
 ```
 
-Creating Javadocs
-=======
+Usage
+======
 ```bash
-$ ./gradlew javadoc
+$ critTer2 filename.c
 ```
+
+Stylistic errors will be reported to the terminal.
 
 Resources
 ========
