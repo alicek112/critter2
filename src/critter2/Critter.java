@@ -41,8 +41,8 @@ public class Critter {
     }
    
     /**
-    * Entry point for Cetus; creates a new Driver object,
-    * and calls run on it with args.
+    * Entry point for Critter: creates a CritterDriver object to create the parse tree
+    * and calls each check in order on the file listed in args.
     *
     * @param args Command line options.
     */
@@ -58,7 +58,7 @@ public class Critter {
         System.err.println("----------------------------");
         System.err.println();
         
-        // Checks begin here.
+        // Remove or add checks here.
         CritterCheck[] checks = {
         		new CheckLoop(program),
         		new CheckBeginningComment(program),
@@ -81,6 +81,7 @@ public class Critter {
         		new CheckNesting(program)
         };
         
+        // Checking is done here
         for (CritterCheck check : checks)
         	check.check();
 
