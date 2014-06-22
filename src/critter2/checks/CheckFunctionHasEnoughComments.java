@@ -11,7 +11,7 @@ import cetus.hir.Traversable;
 import critter2.CritterCheck;
 
 /**
- * Warns if functions don’t have enough local comments.
+ * Warns if functions does not have enough local comments.
  * 
  * Assumes that if, while, for, do while and switch elements should all have comments.
  * Checks the number of local comments with the number of those 
