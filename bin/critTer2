@@ -56,7 +56,7 @@ def main():
         sys.exit(1)
 
     # Start the string of command-line arguments to be passed to cetus.
-    args = ''
+    args = '-preprocessor="gcc217 -E -C -dD" '
 
     # If TEMP_DIR doesn't exist, then create it.
     if not os.path.exists(TEMP_DIR):
@@ -69,7 +69,7 @@ def main():
             cFile = arg
             annotatedCFile = TEMP_DIR + '/' + arg
             annotate(cFile, annotatedCFile)
-            args = annotatedCFile
+            critterargs = args + annotatedCFile
 
 		# Populate TEMP_DIR with line-numbered versions of each .h file in the directory
 	    for hFile in os.listdir('.'):
@@ -80,7 +80,7 @@ def main():
 	    # Execute Cetus to (1) parse the line-numbered .c files that are
 	    # in TEMP_DIR (placing the resulting files in the ./cetus_output
 	    # directory), and (2) write its critique to stdout.
-	    call('java -cp "' + CPATH + '" critter2.Critter ' + args, shell=True)
+	    call('java -cp "' + CPATH + '" critter2.Critter ' + critterargs, shell=True)
 	
 	    # Delete the temporary directories.
 	    rmtree('./critTer_bak')

@@ -36,7 +36,7 @@ import critter2.checks.CheckVariableName;
 public class Critter {
     
     public static int usage() {
-    	System.out.println("USAGE: Critter filename");
+    	System.out.println("USAGE: Critter filename OR Critter -preprocessor=\"options\" filename");
     	return -1;
     }
    
@@ -48,11 +48,17 @@ public class Critter {
     */
     public static void main(String[] args) {
     	
-    	if (args.length != 1) {
+    	if (args.length < 1 || args.length > 2) {
     		System.exit(usage());
     	}
     	
-    	Program program = (new CritterDriver()).parseProgram(args[0]);
+    	Program program = null;
+    	
+    	if (args.length == 1)
+    		program = (new CritterDriver()).parseProgram(args[0]);
+    	else {
+    		program = (new CritterDriver()).parseProgram(args[0].substring(14), args[1]);
+    	}
         
         System.err.println("critTer2 warnings start here");
         System.err.println("----------------------------");

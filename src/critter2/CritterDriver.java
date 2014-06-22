@@ -28,12 +28,12 @@ public class CritterDriver {
 	 * @param filename name of the .c file
 	 * @return root node of the parse tree
 	 */
-	protected Program parseProgram(String filename) {
+	protected Program parseProgram(String preprocessor, String filename) {
         Program program = new Program();
         CommandLineOptionSet options = new CommandLineOptionSet();
         options.add(options.UTILITY,
                 "preprocessor",
-                "gcc -E -C -dD",
+                preprocessor,
                 "command",
                 "Set the preprocessor command to use");
         
@@ -43,6 +43,9 @@ public class CritterDriver {
         program.addTranslationUnit(tu);
         
         return program;
-        
     }
+	
+	protected Program parseProgram(String filename) {
+		return parseProgram("gcc -E -C -dD", filename);
+	}
 }

@@ -33,5 +33,6 @@ public class SampleCheck extends CritterCheck {
 	@Override
 	public void check() {
 		// The check itself occurs here.
+		
 	}
 }
