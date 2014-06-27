@@ -9,6 +9,15 @@ import sys
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 
+# Return line, making sure that it ends with a newline character.
+
+def fullLine(line):
+    if line.endswith('\n'):
+        return line
+    return line + '\n'
+
+#-----------------------------------------------------------------------
+
 # Splice pragmas into file frompath which indicate line numbers, and
 # which delimit includes of standard .h files.  Store the result in
 # file topath.
@@ -23,16 +32,17 @@ def annotate(frompath, topath):
                 if (line.lstrip().startswith('#include')) \
                         and ('<' in line) and ('>' in line):
                     modded.write('#pragma critTer:startStdInclude:\n')
-                    modded.write(line)
+                    modded.write(fullLine(line))
                     modded.write('#pragma critTer:endStdInclude:\n')
                 elif (line.lstrip().startswith('#include')) \
                         and ('\"' in line):
                     modded.write('#pragma critTer:startStudentInclude:\n')
-                    modded.write(line)
+                    modded.write(fullLine(line))
                     modded.write('#pragma critTer:endStudentInclude:\n')
                 else:
-                    modded.write(line)
+                    modded.write(fullLine(line))
                 num += 1
+
 
 #-----------------------------------------------------------------------
 

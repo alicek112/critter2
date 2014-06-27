@@ -20,6 +20,6 @@ public class CheckGoTosTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0, "\n../../test/resources/pragma_forLoop.c: line 14: high priority: \nNever use GOTO statements\n");
+		tr.assertErrorEquals(0, "\n   ../../test/resources/pragma_forLoop.c: line 14: high priority: \n   Never use GOTO statements\n");
 	}
 }

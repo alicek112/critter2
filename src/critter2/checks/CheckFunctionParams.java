@@ -56,7 +56,7 @@ public class CheckFunctionParams extends CritterCheck {
     			
     			if (paramNum > MAX_PARAMETER_NUMBER) {
     				reportErrorPos(t, "medium priority: " +
-    						"%nA function should have no more than %d " +
+    						"%n   A function should have no more than %d " +
     						"parameters; this function has %d%n",
     						MAX_PARAMETER_NUMBER, paramNum);
     			}	

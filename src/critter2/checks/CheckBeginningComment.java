@@ -51,12 +51,12 @@ public class CheckBeginningComment extends CritterCheck {
     	// of student code is either blank or a pragma.
     	if (first.toString().startsWith("#pragma")) {
     		reportErrorPos(first, "high priority: " +
-    				"\nA file should begin with a comment.\n");
+    				"\n   A file should begin with a comment.\n");
     	}
     	
     	if (!(first instanceof PreAnnotation)) {
     		reportErrorPos(first, "high priority: " +
-    				"\nA file should begin with a comment.\n");
+    				"\n   A file should begin with a comment.\n");
     	}
     	
     	dfs = new DepthFirstIterator<Traversable>(program);
@@ -73,11 +73,11 @@ public class CheckBeginningComment extends CritterCheck {
     			Traversable n = dfs.next();
     			if (n.toString().startsWith("#pragma critTer")) {
     				reportErrorPos(n, "high priority: " +
-    						"\nA file should begin with a comment.\n");
+    						"\n   A file should begin with a comment.\n");
     			}
     			if (!(n instanceof PreAnnotation)) {
     				reportErrorPos(n, "high priority: " +
-    						"\nA file should begin with a comment.\n");
+    						"\n   A file should begin with a comment.\n");
     			}
     		}
     	}

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #-----------------------------------------------------------------------
-# critTer
+# critTer2 script
 #-----------------------------------------------------------------------
 
 import sys
@@ -22,6 +22,15 @@ CPATH = \
 #-----------------------------------------------------------------------
 #-----------------------------------------------------------------------
 
+# Return line, making sure that it ends with a newline character.
+
+def fullLine(line):
+    if line.endswith('\n'):
+        return line
+    return line + '\n'
+
+#-----------------------------------------------------------------------
+
 # Splice pragmas into file frompath which indicate line numbers, and
 # which delimit includes of standard .h files.  Store the result in
 # file topath.
@@ -36,54 +45,65 @@ def annotate(frompath, topath):
                 if (line.lstrip().startswith('#include')) \
                         and ('<' in line) and ('>' in line):
                     modded.write('#pragma critTer:startStdInclude:\n')
-                    modded.write(line)
+                    modded.write(fullLine(line))
                     modded.write('#pragma critTer:endStdInclude:\n')
                 elif (line.lstrip().startswith('#include')) \
                         and ('\"' in line):
                     modded.write('#pragma critTer:startStudentInclude:\n')
-                    modded.write(line)
+                    modded.write(fullLine(line))
                     modded.write('#pragma critTer:endStudentInclude:\n')
                 else:
-                    modded.write(line)
+                    modded.write(fullLine(line))
                 num += 1
 
 #-----------------------------------------------------------------------
 
 def main():
 
+	# Validate command-line arguments
     if len(sys.argv) == 1:
         print "No arguments given!"
         sys.exit(1)
+    for arg in sys.argv[1:]:
+        if not os.path.exists(arg):
+            print arg + ' does not exist.'
+            sys.exit(1)
 
     # Start the string of command-line arguments to be passed to cetus.
-    args = '-preprocessor="gcc -E -C -dD" '
+    argsPrefix = '-preprocessor="gcc217 -E -C -dD" '
 
     # If TEMP_DIR doesn't exist, then create it.
     if not os.path.exists(TEMP_DIR):
         os.makedirs(TEMP_DIR)
 
-    # Run critTer on each file requested
-    for arg in sys.argv[1:]:    
-    	# Populate TEMP_DIR with line-numbered versions of each .c file.
+	# Populate TEMP_DIR with line-numbered versions of each .c file
+    # specified as a command-line argument.
+    for arg in sys.argv[1:]:
         if arg.endswith('.c'):
             cFile = arg
             annotatedCFile = TEMP_DIR + '/' + arg
             annotate(cFile, annotatedCFile)
-            critterargs = args + annotatedCFile
+            # args += annotatedCFile + " "
 
-		# Populate TEMP_DIR with line-numbered versions of each .h file in the directory
-	    for hFile in os.listdir('.'):
-	        if hFile.endswith('.h'):
-	            annotatedHFile = TEMP_DIR + '/' + hFile
-	            annotate(hFile, annotatedHFile)
-
-	    # Execute Cetus to (1) parse the line-numbered .c files that are
-	    # in TEMP_DIR (placing the resulting files in the ./cetus_output
-	    # directory), and (2) write its critique to stdout.
-	    call('java -cp "' + CPATH + '" critter2.Critter ' + critterargs, shell=True)
+    # Populate TEMP_DIR with annotated versions of each .h file in
+    # the working directory.
+    for hFile in os.listdir('.'):
+        if hFile.endswith('.h'):
+            annotatedHFile = TEMP_DIR + '/' + hFile
+            annotate(hFile, annotatedHFile)
+            
+    # Execute Cetus to (1) parse the line-numbered .c files that are
+    # in TEMP_DIR (placing the resulting files in the ./cetus_output
+    # directory), and (2) write its critique to stdout.
+    for arg in sys.argv[1:]:
+        args = argsPrefix + TEMP_DIR + '/' + arg
+        print
+        print 'Checking ' + arg
+        call('java -cp "' + CPATH + '" cetus.exec.Critter ' + args,
+            shell=True)
 	
-	    # Delete the temporary directories.
-	    rmtree('./critTer_bak')
+	# Delete the temporary directories.
+    rmtree('./critTer_bak')
 
 #-----------------------------------------------------------------------
 

@@ -59,7 +59,7 @@ public class CheckStructHasComment extends CritterCheck {
 	        			Traversable p = getPreviousNonPragma(c.getParent());
 	        			if (!(p instanceof PreAnnotation)) {
 	        				reportErrorPos(c, "medium priority:" +
-	        						" %nA comment should appear above each " +
+	        						"%n   A comment should appear above each " +
 	        						"field in a struct.%n");
 	        			}
 	        			

@@ -44,7 +44,7 @@ public class CheckGoTos extends CritterCheck {
     		
     		if (t instanceof GotoStatement) {
     			reportErrorPos(t, "high priority: " +
-    					"%nNever use GOTO statements%n");
+    					"%n   Never use GOTO statements%n");
     		}
     	}
 	}

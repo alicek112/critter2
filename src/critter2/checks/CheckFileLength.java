@@ -52,9 +52,9 @@ public class CheckFileLength extends CritterCheck {
     		if (t.toString().startsWith("#pragma critTer:endStudentInclude:")) {
     			// Finds the last Critter pragma in included file to find last line number.
     			if (getLineNumber(t) > MAX_FILE_LENGTH) {
-    	    		reportErrorPos(t, "low priority: %nA source " +
-    	    				"code file should contain fewer than %d " +
-    	    				"lines;%nthis file contains %d lines%n", MAX_FILE_LENGTH, getLineNumber(t));
+    	    		reportErrorPos(t, "low priority: "
+    	    				+ "%n   A source code file should contain fewer than %d lines;"
+    	    				+ "%n   this file contains %d lines%n", MAX_FILE_LENGTH, getLineNumber(t));
     	    	}
     		}
     		
@@ -71,9 +71,9 @@ public class CheckFileLength extends CritterCheck {
     	}
     	
     	if (linecount > MAX_FILE_LENGTH) {
-    		reportErrorPos(currentNode, "low priority: %nA source code " +
-    				"file should contain fewer than %d " +
-    				"lines;%nthis file contains %d lines%n", MAX_FILE_LENGTH, linecount);
+    		reportErrorPos(currentNode, "low priority: "
+    				+ "%n   A source code file should contain fewer than %d lines;"
+    				+ "%n   this file contains %d lines%n", MAX_FILE_LENGTH, linecount);
     	}
 	}
 }

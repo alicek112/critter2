@@ -10,16 +10,20 @@ import cetus.hir.Program;
 public class CheckFunctionNamingTest {
 	@Test
 	public void test() {
-		Program program = Utils.getProgram("pragma_functionNaming.c");
+		Program program = Utils.getProgram("pragmaFunctionName.c");
 
 		Utils.TestErrorReporter tr = new Utils.TestErrorReporter();
 		
 		CritterCheck check = new CheckFunctionNaming(program, tr);
 		check.check();
 		
-		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,"\n../../test/resources/functionNaming.c: line 8: medium priority: " +
-				"\nA function's prefix should match the module name; prefix and badprefix do not match\n");
+		tr.assertNumErrors(2);
+		tr.assertErrorEquals(0,"\n   resources/functionName.c: line 5: medium priority:"
+				+ "\n   Function names should be prefixed with module names;"
+				+ "\n   function name bad_func does not match module name resources/functionName.c\n");
+		tr.assertErrorEquals(1,"\n   resources/functionName.c: line 9: medium priority:"
+				+ "\n   Function names should be prefixed with module names;"
+				+ "\n   function name reallybad does not match module name resources/functionName.c\n");
 		
 	}
 }

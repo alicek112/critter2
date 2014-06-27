@@ -19,7 +19,7 @@ public class CheckSwitchHasDefaultCaseTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/switch.c: line 6: low priority: "
-				+ "\nA switch statement should have a default case\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/switch.c: line 6: low priority: "
+				+ "\n   A switch statement should have a default case\n");
 	}
 }

@@ -19,7 +19,7 @@ public class CheckNestingTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/nesting.c: line 11: low priority: "
-				+ "\nThis area is deeply nested at level 4, consider refactoring\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/nesting.c: line 11: low priority: "
+				+ "\n   This area is deeply nested at level 4, consider refactoring\n");
 	}
 }

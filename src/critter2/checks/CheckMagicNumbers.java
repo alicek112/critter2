@@ -74,11 +74,9 @@ public class CheckMagicNumbers extends CritterCheck {
     			
     			if (isNumeric(c)) {
     				reportErrorPos(t, "high priority: " +
-    						"%nUse of magic number (%s), which should " +
-    						"be given a meaningful name, " +
-    						"or a #define, which should be replaced " +
-    						"with an enum (unless it's the result of " +
-    						"a #define in a standard C header file)%n", c);
+    						"%n   Use of magic number (%s), which should be given a meaningful name, " +
+    						"%n   or a #define, which should be replaced with an enum "
+    						+ "%n   (unless it's the result of a #define in a standard C header file)%n", c);
     			}	
     		}
     		
@@ -88,11 +86,10 @@ public class CheckMagicNumbers extends CritterCheck {
     				if (number.getValue() != 0 && number.getValue() != 1 
     						&& number.getValue() != 2) {
     					reportErrorPos(t, "high priority: " +
-    							"%nUse of magic number (%s), which should " +
-    							"be given a meaningful name, " +
-    						    "or a #define, which should be replaced with " +
-    						    "an enum (unless it's the result of a #define " +
-    						    "in a standard C header file)%n", t.toString());
+        						"%n   Use of magic number (%s), which should be given a meaningful name, " +
+        						"%n   or a #define, which should be replaced with an enum "
+        						+ "%n   (unless it's the result of a #define in a standard C header file)%n", 
+        						t.toString());
     				}	
     			}
     		}
@@ -103,11 +100,10 @@ public class CheckMagicNumbers extends CritterCheck {
     				if (number.getValue() != 0 && number.getValue() != 1 
     						&& number.getValue() != 2) {
     					reportErrorPos(t, "high priority: " +
-    							"%nUse of magic number (%s), which should " +
-    							"be given a meaningful name, " +
-    						    "or a #define, which should be replaced with " +
-    						    "an enum (unless it's the result of a #define " +
-    						    "in a standard C header file)%n", t.toString());
+        						"%n   Use of magic number (%s), which should be given a meaningful name, " +
+        						"%n   or a #define, which should be replaced with an enum "
+        						+ "%n   (unless it's the result of a #define in a standard C header file)%n", 
+        						t.toString());
     				}	
     			}
     		}

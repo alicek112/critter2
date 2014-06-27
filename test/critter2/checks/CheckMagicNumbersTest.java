@@ -19,8 +19,9 @@ public class CheckMagicNumbersTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../../test/resources/pragma_forLoop.c: line 6: high priority: "
-				+ "\nUse of magic number (10), which should be given a meaningful name, or a #define, "
-				+ "which should be replaced with an enum (unless it's the result of a #define in a standard C header file)\n");
+		tr.assertErrorEquals(0,  "\n   ../../test/resources/pragma_forLoop.c: line 6: high priority: "
+				+ "\n   Use of magic number (10), which should be given a meaningful name, "
+				+ "\n   or a #define, which should be replaced with an enum "
+				+ "\n   (unless it's the result of a #define in a standard C header file)\n");
 	}
 }

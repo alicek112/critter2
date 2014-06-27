@@ -19,7 +19,7 @@ public class CheckBeginningCommentTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,	"\n../../test/resources/pragma_forLoop.c: line 1: high priority: \nA file should begin with a comment.\n");
+		tr.assertErrorEquals(0,	"\n   ../../test/resources/pragma_forLoop.c: line 1: high priority: \n   A file should begin with a comment.\n");
 
 	}
 }

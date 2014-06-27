@@ -89,8 +89,7 @@ public class CheckAsserts extends CritterCheck {
 		    		if (paramNames.get(i).compareTo("argv") != 0) {
 			    		if (!hasAssert[i]) {
 			   				reportErrorPos(t, "medium priority:" +
-			   						" \nDo you want to validate '%s' " +
-			   						"through an assert?\n", paramNames.get(i));
+			   						"\n   Do you want to validate '%s' through an assert?\n", paramNames.get(i));
 			   			}
 		    		}
 	    		}

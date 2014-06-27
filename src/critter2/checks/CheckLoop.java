@@ -52,10 +52,8 @@ public class CheckLoop extends CritterCheck {
     			
     			if (looplinecount > MAX_LOOP_LENGTH) {
     				reportErrorPos(t, "low priority: " +
-    						"\nA loop should consist of fewer than %d " +
-    						"lines;\n " +
-    						"this loop consists of %d lines; consider " +
-    						"refactoring\n", 
+    						"\n   A loop should consist of fewer than %d lines;"
+    						+ "\n   this loop consists of %d lines; consider refactoring\n", 
     						MAX_LOOP_LENGTH, looplinecount);
     			}
     		}

@@ -19,7 +19,7 @@ public class CheckEmptyCompoundTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/functionCommentParam.c: line 23: "
-				+ "medium priority: \nDo not use empty compound statements.\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/functionCommentParam.c: line 23: "
+				+ "medium priority: \n   Do not use empty compound statements.\n");
 	}
 }

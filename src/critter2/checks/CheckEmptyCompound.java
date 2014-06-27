@@ -43,7 +43,7 @@ public class CheckEmptyCompound extends CritterCheck {
     		
     		if (t.toString().compareTo("{\n\n}") == 0) {
     			reportErrorPos(t, "medium priority: " +
-    					"%nDo not use empty compound statements.%n");
+    					"%n   Do not use empty compound statements.%n");
     		}
     	}
 	}

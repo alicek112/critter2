@@ -65,9 +65,8 @@ public class CheckSwitchCases extends CritterCheck {
     					}
     					else {
     						reportErrorPos(currentCase, "medium priority:" +
-    								" %nEach case/default in a switch statement " +
-    								"should have a break or return statement, " +
-    								"you're missing one here.%n");
+    								"%n   Each case/default in a switch statement should have a break or return statement," +
+    								"%n   you're missing one here.%n");
     					}
     				}
     				

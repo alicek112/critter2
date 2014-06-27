@@ -58,9 +58,9 @@ public class CheckFunctionNumber extends CritterCheck {
     	}
     	
     	if (functioncount > MAX_FUNCTION_NUMBER) {
-			reportErrorPos(firstNode, "low priority: \nA file should " +
-					"contain no more than %d functions;\n " +
-					"this file contains %d functions\n", 
+			reportErrorPos(firstNode, "low priority: "
+					+ "\n   A file should contain no more than %d functions;"
+					+ "\n   this file contains %d functions\n", 
 					MAX_FUNCTION_NUMBER, functioncount);
 		}
 	}

@@ -19,7 +19,7 @@ public class CheckFunctionParamsTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/functionCommentParam.c: line 3: medium priority: "
-				+ "\nA function should have no more than 7 parameters; this function has 8\n");
+		tr.assertErrorEquals(0, "\n   ../test/resources/functionCommentParam.c: line 3: medium priority: "
+				+ "\n   A function should have no more than 7 parameters; this function has 8\n");
 	}
 }

@@ -19,7 +19,7 @@ public class CheckStructHasCommentTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/fileLength.c: line 6: medium priority: "
-				+ "\nA comment should appear above each field in a struct.\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/fileLength.c: line 6: medium priority:"
+				+ "\n   A comment should appear above each field in a struct.\n");
 	}
 }

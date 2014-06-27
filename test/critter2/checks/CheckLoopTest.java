@@ -19,8 +19,8 @@ public class CheckLoopTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,"\n../../test/resources/pragma_forLoop.c: line 6: low priority: "
-				+ "\nA loop should consist of fewer than 35 lines;\n this loop consists of 49 lines; "
+		tr.assertErrorEquals(0,"\n   ../../test/resources/pragma_forLoop.c: line 6: low priority: "
+				+ "\n   A loop should consist of fewer than 35 lines;\n   this loop consists of 49 lines; "
 				+ "consider refactoring\n");
 	}
 }

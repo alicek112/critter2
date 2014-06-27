@@ -61,7 +61,7 @@ public class CheckNesting extends CritterCheck {
     			
     			if (nesting > MAX_NESTING) {
     				reportErrorPos(body, "low priority: " +
-    						"%nThis area is deeply nested at level %d," +
+    						"%n   This area is deeply nested at level %d," +
     						" consider refactoring%n", nesting);
     			}
     		}
@@ -95,7 +95,7 @@ public class CheckNesting extends CritterCheck {
     			}
     			if (nesting > MAX_NESTING) {
     				reportErrorPos(t, "low priority: " +
-    						"%nThis area is deeply nested at level %d," +
+    						"%n   This area is deeply nested at level %d," +
     						" consider refactoring%n", nesting);
     			}
     		}
@@ -113,8 +113,8 @@ public class CheckNesting extends CritterCheck {
     			}
     			
     			if (nesting > MAX_NESTING) {
-    				reportErrorPos(body, "%n%s: line %d: low priority: " +
-    						"%nThis area is deeply nested at level %d," +
+    				reportErrorPos(body, "low priority: " +
+    						"%n   This area is deeply nested at level %d," +
     						" consider refactoring%n", nesting);
     			}
     		}	

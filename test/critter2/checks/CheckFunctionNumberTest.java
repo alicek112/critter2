@@ -19,8 +19,8 @@ public class CheckFunctionNumberTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,"\n../../test/resources/functionNumber.c: line 63: low priority: " +
-				"\nA file should contain no more than 15 functions;\n this file contains 16 functions\n");
+		tr.assertErrorEquals(0,"\n   ../../test/resources/functionNumber.c: line 63: low priority: " +
+				"\n   A file should contain no more than 15 functions;\n   this file contains 16 functions\n");
 
 	}
 }

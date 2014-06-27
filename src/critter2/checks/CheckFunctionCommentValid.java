@@ -79,9 +79,8 @@ public class CheckFunctionCommentValid extends CritterCheck {
 		   					
 		   					if (!comment.toString().contains(" " + paramName)) {
 		   						reportErrorPos(comment, "high priority: " +
-		   								"\nA function's comment should refer to " +
-		   								"each parameter by name;\nyour comment " +
-		   								"does not refer to '%s'\n", paramName);
+		   								"\n   A function's comment should refer to each parameter by name;"
+		   								+ "\n   your comment does not refer to '%s'\n", paramName);
 		   					}
 		    			}
 		    				
@@ -91,7 +90,7 @@ public class CheckFunctionCommentValid extends CritterCheck {
 			    			if (!comment.toString().contains("return") && 
 			    					!comment.toString().contains("Return")) {
 			   					reportErrorPos(comment, "high priority: " +
-			   							"\nA function's comment should state " +
+			   							"\n   A function's comment should state " +
 			   	                        "explicitly what the function returns\n");
 		    				}
 	    				}
@@ -102,7 +101,7 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	   			// preceding them.
 	   			if (!(p instanceof PreAnnotation)) {
 		    		reportErrorPos(function, "high priority: " +
-		    				"\nA function definition should have a comment\n");		
+		    				"\n   A function definition should have a comment\n");		
 	    		}
     		}
     	}

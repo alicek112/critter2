@@ -53,10 +53,8 @@ public class CheckFunctionLengthByLines extends CritterCheck {
     			
     			if (functionlinecount > MAX_FUNCTION_LENGTH) {
     				reportErrorPos(t, "low priority: " +
-    						"\nA function should consist of fewer than " +
-    						"%d lines;\n " +
-    						"this function consists of %d lines; " +
-    						"consider refactoring\n", 
+    						"\n   A function should consist of fewer than %d lines;" +
+    						"\n   this function consists of %d lines; consider refactoring\n", 
     						MAX_FUNCTION_LENGTH, functionlinecount);
     			}
     		}

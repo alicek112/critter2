@@ -17,8 +17,8 @@ public class CheckAssertsTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0, "\n../../test/resources/functionCommentReturn.c: line 2: medium priority: " +
-				"\nDo you want to validate 'x' through an assert?\n");
+		tr.assertErrorEquals(0, "\n   ../../test/resources/functionCommentReturn.c: "
+				+ "line 2: medium priority:\n   Do you want to validate 'x' through an assert?\n");
 		
 	}
 }

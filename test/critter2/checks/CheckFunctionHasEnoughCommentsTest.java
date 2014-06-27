@@ -19,7 +19,7 @@ public class CheckFunctionHasEnoughCommentsTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/functionCommentParam.c: line 3: low priority: "
-				+ "\nThis function definition probably needs more local comments\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/functionCommentParam.c: line 3: low priority: "
+				+ "\n   This function definition probably needs more local comments\n");
 	}
 }

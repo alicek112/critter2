@@ -19,7 +19,8 @@ public class CheckSwitchCasesTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/switch.c: line 8: medium priority: \nEach case/default in a "
-				+ "switch statement should have a break or return statement, you're missing one here.\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/switch.c: line 8: medium priority:"
+				+ "\n   Each case/default in a "
+				+ "switch statement should have a break or return statement,\n   you're missing one here.\n");
 	}
 }

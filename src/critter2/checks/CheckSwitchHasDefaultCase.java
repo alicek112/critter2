@@ -57,7 +57,7 @@ public class CheckSwitchHasDefaultCase extends CritterCheck {
     			
     			if (!hasDefault) {
     				reportErrorPos(t, "low priority: " +
-    						"%nA switch statement should have a default " +
+    						"%n   A switch statement should have a default " +
     						"case%n");
     			}
     		}

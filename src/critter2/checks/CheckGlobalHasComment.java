@@ -72,7 +72,7 @@ public class CheckGlobalHasComment extends CritterCheck {
 	    					if (!(t.getParent().getParent() instanceof VariableDeclaration)) {
 	    						
 			    				reportErrorPos(t, "high priority: " +
-			    						"%nA comment should appear above each " +
+			    						"%n   A comment should appear above each " +
 			    						"global variable.%n");
 	    					}
 	    				}
@@ -97,7 +97,7 @@ public class CheckGlobalHasComment extends CritterCheck {
 	    					if (!(t.getParent().getParent() instanceof VariableDeclaration)) {
 	    						
 			    				reportErrorPos(t, "high priority: " +
-			    						"%nA comment should appear above each " +
+			    						"%n   A comment should appear above each " +
 			    						"global variable.%n");
 	    					}
 	    				}

@@ -19,7 +19,7 @@ public class CheckVariableNameTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/functionCommentParam.c: "
-				+ "line 5: medium priority: \nVariable/function name 'x' is too short\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/functionCommentParam.c: "
+				+ "line 5: medium priority:\n   Variable/function name 'x' is too short\n");
 	}
 }

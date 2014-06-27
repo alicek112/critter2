@@ -83,7 +83,7 @@ public class CheckFunctionHasEnoughComments extends CritterCheck {
     			if ((countElements - countComments) 
     					> MAX_LOCAL_COMMENT_DISCREPANCY) {
     				reportErrorPos(t, "low priority: " +
-    						"%nThis function definition probably needs" +
+    						"%n   This function definition probably needs" +
     						" more local comments%n");
     			}
     		}

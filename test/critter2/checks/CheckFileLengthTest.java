@@ -19,7 +19,7 @@ public class CheckFileLengthTest {
 		check.check();
 		
 		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n../test/resources/fileLength.c: line 621: low priority: "
-				+ "\nA source code file should contain fewer than 500 lines;\nthis file contains 622 lines\n");
+		tr.assertErrorEquals(0,  "\n   ../test/resources/fileLength.c: line 621: low priority: "
+				+ "\n   A source code file should contain fewer than 500 lines;\n   this file contains 622 lines\n");
 	}
 }

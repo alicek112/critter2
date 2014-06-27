@@ -79,7 +79,7 @@ public class CheckVariableName extends CritterCheck {
     				if (!ACCEPTABLE_VAR_NAMES.contains(xName)) {
     					if (xName.length() < MIN_VAR_NAME_LENGTH) {
     						reportErrorPos(t, "medium priority:" +
-    								" %nVariable/function name '%s' " +
+    								"%n   Variable/function name '%s' " +
     								"is too short%n", xName);
     					}
     				}
@@ -94,7 +94,7 @@ public class CheckVariableName extends CritterCheck {
     				if (!ACCEPTABLE_VAR_NAMES.contains(xName)) {
     					if (xName.length() < MIN_VAR_NAME_LENGTH) {
     						reportErrorPos(t, "medium priority:" +
-    								" %nVariable/function name '%s' " +
+    								"%n   Variable/function name '%s' " +
     								"is too short%n", xName);
     					}
     				}

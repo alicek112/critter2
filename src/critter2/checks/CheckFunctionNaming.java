@@ -42,12 +42,9 @@ public class CheckFunctionNaming extends CritterCheck {
 	public void check() {
 		DepthFirstIterator<Traversable> dfs = 
     			new DepthFirstIterator<Traversable>(program);
-
-		String commonPrefix = null;
 		
 		// check if test needs to be done (check if there is a main 
 		// function definition)
-		boolean hasMain = false;
 		while (dfs.hasNext()) {
 			Traversable t = dfs.next();
 			
@@ -55,34 +52,35 @@ public class CheckFunctionNaming extends CritterCheck {
 				IDExpression n = ((Procedure) t).getName();
     			String name = n.getName();
     			if (name.compareTo("main") == 0)
-    				hasMain = true;
+    				return;
 			}
 		}
 		
-		// if no main function, search through tree for function names.
-		if (!hasMain) {
-			dfs = new DepthFirstIterator<Traversable>(program);
+		dfs = new DepthFirstIterator<Traversable>(program);
 		
-			while (dfs.hasNext()) {
-	    		Traversable t = nextNoStdInclude(dfs);
-	    		
-	    		// if node is a function (Procedure), test if its name has correct prefix
-	    		if (t instanceof Procedure) {
-	    			IDExpression n = ((Procedure) t).getName();
-	    			String name = n.getName();
-	    			String prefix = name.split("_")[0];
-	    			
-	    			if (commonPrefix == null && prefix.compareTo("main") != 0)
-	    				commonPrefix = prefix;
-	    			
-	    			else if (prefix.compareTo("main") != 0 && commonPrefix.compareTo(prefix) != 0) {
-    					reportErrorPos(t, "medium priority: " +
-    							"\nA function's prefix should match the " +
-    							"module name; %s and %s do not match\n", 
-        						commonPrefix, prefix);
-	    			}
-	    		}
-			}
-    	}
+		while (dfs.hasNext()) {
+    		Traversable t = nextNoStdInclude(dfs);
+    		
+    		// if node is a function (Procedure), test if its name has correct prefix
+    		if (t instanceof Procedure) {
+    			IDExpression n = ((Procedure) t).getName();
+                String fnName = n.getName();
+                String fileName = getFilename(t);
+
+                String fnNamePrefix = fnName.split("_")[0];
+                String fileNamePrefix = fileName.split("\\.")[0];
+
+                String lowerCaseFileNamePrefix = fileNamePrefix.toLowerCase();
+                String lowerCaseFnNamePrefix = fnNamePrefix.toLowerCase();
+
+                if ((lowerCaseFnNamePrefix.indexOf(lowerCaseFileNamePrefix) == -1) &&
+                    (lowerCaseFileNamePrefix.indexOf(lowerCaseFnNamePrefix) == -1))
+
+                	reportErrorPos(t, "medium priority:" +
+                		    "\n   Function names should be prefixed with module names;" +
+                		    "\n   function name %s does not match module name %s" +
+                		    "\n", fnName, fileName);
+    		}
+		}
 	}
 }
