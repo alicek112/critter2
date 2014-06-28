@@ -12,7 +12,7 @@ int prefix_Func(int something) {
 #pragma critTer:6:../../test/resources/functionNaming.c:
 }
 #pragma critTer:7:../../test/resources/functionNaming.c:
-/* good comment returns an int and references !b */
+
 #pragma critTer:8:../../test/resources/functionNaming.c:
 int badprefix_Func(int b) {
 #pragma critTer:9:../../test/resources/functionNaming.c:
