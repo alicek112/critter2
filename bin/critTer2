@@ -99,7 +99,7 @@ def main():
         args = argsPrefix + TEMP_DIR + '/' + arg
         print
         print 'Checking ' + arg
-        call('java -cp "' + CPATH + '" critter.Critter ' + args,
+        call('java -cp "' + CPATH + '" critter2.Critter ' + args,
             shell=True)
 	
 	# Delete the temporary directories.
