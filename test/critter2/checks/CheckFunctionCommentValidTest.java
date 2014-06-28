@@ -19,13 +19,11 @@ public class CheckFunctionCommentValidTest {
 		CritterCheck check = new CheckFunctionCommentValid(program, tr);
 		check.check();
 		
-		tr.assertNumErrors(3);
+		tr.assertNumErrors(2);
 		tr.assertErrorEquals(0,"\n   ../../test/resources/functionNaming.c: line 1: high priority: "
-				+ "\n   A function's comment should refer to each parameter by name;\n   your comment does not refer to 'a'\n");
+				+ "\n   A function's comment should refer to each parameter by name;\n   your comment does not refer to 'something'\n");
 		tr.assertErrorEquals(1, "\n   ../../test/resources/functionNaming.c: line 1: high priority: "
 				+ "\n   A function's comment should state explicitly what the function returns\n");
-		tr.assertErrorEquals(2, "\n   ../../test/resources/functionNaming.c: line 8: high priority: "
-				+ "\n   A function definition should have a comment\n");
 		
 	}
 }

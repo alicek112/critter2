@@ -10,7 +10,7 @@ from shutil import rmtree
 
 #-----------------------------------------------------------------------
 
-CRITTER_DIR = os.path.dirname(__file__) + '/..'
+CRITTER_DIR = os.path.dirname(__file__)[0:-len('/bin')]
 CRITTER_CLS_DIR = CRITTER_DIR + '/build/classes/main'
 CRITTER_JAR_DIR = CRITTER_DIR + '/Jars'
 TEMP_DIR = './critTer_bak'
