@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -349,7 +350,7 @@ public abstract class CritterCheck {
     	}
     	
     	FileInputStream fs= new FileInputStream(path + filename);
-    	BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+    	BufferedReader br = new BufferedReader(new InputStreamReader(fs, Charset.defaultCharset()));
     	
     	ArrayList<String> lst = new ArrayList<String>();
     	
@@ -366,6 +367,26 @@ public abstract class CritterCheck {
     		br.close();
     	}
     }
+    
+    /**
+     * Returns an array of all the previous comment nodes that are not
+     * pragmas
+     * 
+     * @param current the current node of the parse tree
+     * @return an array of PreAnnotations containing all the previous comments
+     */
+    public PreAnnotation[] getPreviousComments(Traversable current) {
+    	ArrayList<PreAnnotation> lst = new ArrayList<PreAnnotation>();
+    	
+    	Traversable prevComment = getPreviousNonPragma(current);
+    	
+    	while (prevComment instanceof PreAnnotation) {
+			lst.add((PreAnnotation) prevComment);
+			prevComment = getPreviousNonPragma(prevComment);
+    	}
+    	
+		return lst.toArray(new PreAnnotation[0]);
+	}
 }
 
 /**

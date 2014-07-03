@@ -59,50 +59,62 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	   				stringList.add(x.toString());
 	   			}
 	   			
-	   			Traversable p = getPreviousNonPragma(function);
-	   			
-	   			// main function doesn't need to be checked for parameter
-	   			// or return mentions in comment
-	   			if (function.getName().toString().compareTo("main") != 0) {
-		    			
-		    		if (p instanceof PreAnnotation) {
-		    			Traversable comment = (PreAnnotation) p;
-		    				
-		    			// Checks if the function's comment refers to 
-		    			// parameters.
-		   				for (int i = 0; 
-		   						i < function.getNumParameters(); 
-		   						i++) {
-		    					
-		   					String paramName = 
-		   						function.getParameter(i).getDeclaredIDs().get(0).toString();
-		   					
-		   					if (!comment.toString().contains(paramName)) {
-		   						reportErrorPos(comment, "high priority: " +
-		   								"\n   A function's comment should refer to each parameter by name;"
-		   								+ "\n   your comment does not refer to '%s'\n", paramName);
-		   					}
-		    			}
-		    				
-		    			// Checks for explicitly stated return, only 
-		   				// for non-void function.
-		    			if (!stringList.contains("void")) {
-			    			if (!comment.toString().contains("return") && 
-			    					!comment.toString().contains("Return")) {
-			   					reportErrorPos(comment, "high priority: " +
-			   							"\n   A function's comment should state " +
-			   	                        "explicitly what the function returns\n");
-		    				}
-	    				}
-	    			}
-	   			}
+	   			PreAnnotation[] prevComments = getPreviousComments(function);
 	   			
 	   			// All functions, including main functions, should have comments
 	   			// preceding them.
-	   			if (!(p instanceof PreAnnotation)) {
+	   			if (prevComments.length == 0) {
 		    		reportErrorPos(function, "high priority: " +
 		    				"\n   A function definition should have a comment\n");		
 	    		}
+	   			
+	   			// main function doesn't need to be checked for parameter
+	   			// or return mentions in comment
+	   			else if (function.getName().toString().compareTo("main") != 0) {
+	   				
+	   				PreAnnotation comment = prevComments[0]; // gives location for all comments
+		    				
+	    			// Checks if the function's comment refers to parameters.
+	   				for (int i = 0; 
+	   						i < function.getNumParameters(); 
+	   						i++) {
+	    					
+	   					String paramName = 
+	   						function.getParameter(i).getDeclaredIDs().get(0).toString();
+	   					
+	   					boolean containsParam = false;
+	   					
+	   					for (int j = 0; j < prevComments.length; j++) {
+	   						if (prevComments[j].toString().contains(paramName))
+	   							containsParam = true;
+	   					}
+	   					
+	   					if (!containsParam) {
+	   						reportErrorPos(comment, "high priority: " +
+	   								"\n   A function's comment should refer to each parameter by name;"
+	   								+ "\n   your comment does not refer to '%s'\n", paramName);
+	   					}
+	    			}
+	    				
+	    			// Checks for explicitly stated return, only 
+	   				// for non-void function.
+	    			if (!stringList.contains("void")) {
+	    				
+	    				boolean containsReturn = false;
+	    				
+	    				for (int i = 0; i < prevComments.length; i++) {
+	   						if (prevComments[i].toString().contains("return") || 
+			    					prevComments[i].toString().contains("Return"))
+	   							containsReturn = true;
+	   					}
+	    				
+		    			if (!containsReturn) {
+		   					reportErrorPos(comment, "high priority: " +
+		   							"\n   A function's comment should state " +
+		   	                        "explicitly what the function returns\n");
+	    				}
+    				}
+	   			}
     		}
     	}
 	}
