@@ -65,8 +65,6 @@ public class Critter {
     		path = args[1].substring(6);
     	}
         
-    	System.err.println(path);
-        
         // Remove or add checks here.
         CritterCheck[] checks = {
         		new CheckLoop(program),
