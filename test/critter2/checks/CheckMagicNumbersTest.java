@@ -11,17 +11,19 @@ public class CheckMagicNumbersTest {
 
 	@Test
 	public void test() {
-		Program program = Utils.getProgram("pragma_forLoop.c");
+		Program program = Utils.getProgram("pragma_magicNums.c");
 		
 		Utils.TestErrorReporter tr = new Utils.TestErrorReporter();
 		
-		CritterCheck check = new CheckMagicNumbers(program, tr);
+		CritterCheck check = new CheckMagicNumbers(program, tr, Utils.path("pragma_magicNums.c"));
 		check.check();
 		
-		tr.assertNumErrors(1);
-		tr.assertErrorEquals(0,  "\n   ../../test/resources/pragma_forLoop.c: line 6: high priority: "
-				+ "\n   Use of magic number (10), which should be given a meaningful name, "
-				+ "\n   or a #define, which should be replaced with an enum "
-				+ "\n   (unless it's the result of a #define in a standard C header file)\n");
+		tr.assertNumErrors(3);
+		tr.assertErrorEquals(0,  "\n   magicNums.c: line 7: high priority: \n   Use of magic number (1), "
+				+ "which should be given a meaningful name\n");
+		tr.assertErrorEquals(1, "\n   magicNums.c: line 16: high priority: \n   Use of magic number (15.2), "
+				+ "which should be given a meaningful name\n");
+		tr.assertErrorEquals(2, "\n   magicNums.c: line 16: high priority: \n   Use of magic number (22), "
+				+ "which should be given a meaningful name\n");
 	}
 }

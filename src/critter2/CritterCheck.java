@@ -1,6 +1,13 @@
 package critter2;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.PreAnnotation;
@@ -28,25 +35,54 @@ public abstract class CritterCheck {
 	 */
 	protected final Program program;
 	
+	/**
+	 * Path to the directory of original source code to be error-checked.
+	 */
+	protected final String path;
+	
 	private final ErrorReporter errorReporter;
 
 	/**
-	 * Constructor used for testing.
+	 * Constructor used for testing, includes knowledge of location of original C file.
 	 * 
 	 * @param program the root node of the parse tree
      * @param errorReporter testing class
+     * @param path the path to the directory location of the original C file
 	 */
-    public CritterCheck(Program program, ErrorReporter errorReporter) {
+    public CritterCheck(Program program, ErrorReporter errorReporter, String path) {
     	
         this.program = program;
         this.errorReporter = errorReporter;
+        this.path = path;
     }
     
     /**
-	 * Main constructor used in Critter.java
+     * Constructor used for testing. 
+     * 
+     * @param program the root node of the parse tree
+     * @param errorReporter testing class
+     */
+    public CritterCheck(Program program, ErrorReporter errorReporter) {
+    	this.program = program;
+    	this.errorReporter = errorReporter;
+    	this.path = null;
+    }
+    
+    /**
+	 * Main constructor used in Critter.java, includes knowledge of location of original C file.
 	 * 
 	 * @param program the root node of the parse tree
+	 * @param path the path to the directory location of the original C file
 	 */
+    public CritterCheck(Program program, String path) {
+    	this(program, new StandardErrorReporter(), path);
+    }
+    
+    /**
+     * Main constructor used in Critter.java
+     * 
+     * @param program the root node of the parse tree
+     */
     public CritterCheck(Program program) {
     	this(program, new StandardErrorReporter());
     }
@@ -86,7 +122,7 @@ public abstract class CritterCheck {
      * @param element the node whose starting location you need
      * @return the line number
      */
-    public long getLineNumber(Traversable element) {
+    public int getLineNumber(Traversable element) {
         Traversable lastComment = getPrevious(element);
         
         while(!lastComment.toString().startsWith("#pragma critTer") 
@@ -94,7 +130,32 @@ public abstract class CritterCheck {
         	lastComment = getPrevious(lastComment);
 
         String[] parts = lastComment.toString().split(":");
-        return Long.parseLong(parts[1]);
+        return Integer.parseInt(parts[1]);
+    }
+    
+    /**
+     * Returns the line number at which the parse tree node begins (based on
+     * the pragmas inserted during the annotating Critter script)
+     * 
+     * @param element the node whose starting location you need
+     * @return the line number
+     */
+    public int getBeginningLineNumber(Traversable element) {
+    	Traversable lastComment = getPrevious(element);
+    	
+    	// Traverse tree until the first critTer pragma (the closest line number)
+    	while(!lastComment.toString().startsWith("#pragma critTer")
+    			|| lastComment.toString().contains("Include"))
+    		lastComment = getPrevious(lastComment);
+    	
+    	Traversable prev = getPrevious(lastComment); // the node before the last comment
+    	while(prev.toString().contains("#pragma critTer") && !prev.toString().contains("Include")) {
+    		lastComment = prev;
+    		prev = getPrevious(prev);
+    	}
+    	
+    	String[] parts = lastComment.toString().split(":");
+    	return Integer.parseInt(parts[1]);
     }
     
     /**
@@ -256,6 +317,54 @@ public abstract class CritterCheck {
 		}
     	
     	return next;
+    }
+    
+    // cache of files critTer is being run on
+    private final Map<String, String[]> cache = new HashMap<String, String[]>();
+    
+    /**
+     * Accesses the line in a given file at a specific linenumber
+     * 
+     * @param filename - the name of the file requested
+     * @param line - the line number requested
+     * @return - the line as a String
+     */
+    public String getLine(String filename, long line) {
+    	if (!cache.containsKey(filename)) {
+    		try {
+				cache.put(filename, this.loadLines(filename));
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+    	}
+    	return cache.get(filename)[(int) (line-1)];
+    }
+    
+    /*
+     * Loads all the lines of one file into critTer's cache
+     */
+    private String[] loadLines(String filename) throws IOException {
+    	if (path == null) {
+    		throw new IOException("Original file not found; no path indicated.");
+    	}
+    	
+    	FileInputStream fs= new FileInputStream(path + filename);
+    	BufferedReader br = new BufferedReader(new InputStreamReader(fs));
+    	
+    	ArrayList<String> lst = new ArrayList<String>();
+    	
+    	try {
+	    	String currentLine = br.readLine();
+	    	while(currentLine != null) {
+	    		lst.add(currentLine);
+	    		currentLine = br.readLine();
+	    	}
+	    	
+	    	return lst.toArray(new String[0]);
+	    	
+    	} finally {
+    		br.close();
+    	}
     }
 }
 

@@ -11,13 +11,17 @@ import cetus.hir.Program;
 
 public class Utils {
 	public static String res(String name) {
+		return path(name) + name;
+	}
+	
+	public static String path(String name) {
 		URL url = Thread.currentThread().getContextClassLoader().getResource("");
 		
 		// gradle and eclipse disagree on resource location base
 		if ((new File(url.getPath() + "../../../test/resources/" + name)).isFile())
-			return url.getPath() + "../../../test/resources/" + name;
+			return url.getPath() + "../../../test/resources/";
 		else
-			return url.getPath() + "../test/resources/" + name;
+			return url.getPath() + "../test/resources/";
 	}
 	
 	public static Program getProgram(String name) {

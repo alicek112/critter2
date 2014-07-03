@@ -36,7 +36,8 @@ import critter2.checks.CheckVariableName;
 public class Critter {
     
     public static int usage() {
-    	System.out.println("USAGE: Critter filename OR Critter -preprocessor=\"options\" filename");
+    	System.out.println("USAGE: Critter -path=\"pathToFile\" filename "
+    			+ "OR Critter -preprocessor=\"options\" -path=\"pathToFile\" filename ");
     	return -1;
     }
    
@@ -48,21 +49,23 @@ public class Critter {
     */
     public static void main(String[] args) {
     	
-    	if (args.length < 1 || args.length > 2) {
+    	if (args.length < 2 || args.length > 3) {
     		System.exit(usage());
     	}
     	
     	Program program = null;
+    	String path = null;
     	
-    	if (args.length == 1)
-    		program = (new CritterDriver()).parseProgram(args[0]);
+    	if (args.length == 2) {
+    		program = (new CritterDriver()).parseProgram(args[1]);
+    		path = args[0].substring(6);
+    	}
     	else {
-    		program = (new CritterDriver()).parseProgram(args[0].substring(14), args[1]);
+    		program = (new CritterDriver()).parseProgram(args[0].substring(14), args[2]);
+    		path = args[1].substring(6);
     	}
         
-        System.err.println("critTer2 warnings start here");
-        System.err.println("----------------------------");
-        System.err.println();
+    	System.err.println(path);
         
         // Remove or add checks here.
         CritterCheck[] checks = {
@@ -81,7 +84,7 @@ public class Critter {
         		new CheckSwitchHasDefaultCase(program),
         		new CheckSwitchCases(program),
         		new CheckStructHasComment(program),
-        		new CheckMagicNumbers(program),
+        		new CheckMagicNumbers(program, path),
         		new CheckVariableName(program),
         		new CheckEmptyCompound(program),
         		new CheckNesting(program)
@@ -90,10 +93,6 @@ public class Critter {
         // Checking is done here
         for (CritterCheck check : checks)
         	check.check();
-
-        System.err.println();
-        System.err.println("----------------------------");
-        System.err.println("critTer2 warnings end here");
         
     }
 }

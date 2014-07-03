@@ -31,8 +31,8 @@ public class CheckMagicNumbers extends CritterCheck {
      * @param program the root node of the parse tree
      * @param errorReporter testing class
      */
-	public CheckMagicNumbers(Program program, CritterCheck.ErrorReporter errorReporter) {
-		super(program, errorReporter);
+	public CheckMagicNumbers(Program program, CritterCheck.ErrorReporter errorReporter, String path) {
+		super(program, errorReporter, path);
 	}
 	
 	/**
@@ -40,8 +40,8 @@ public class CheckMagicNumbers extends CritterCheck {
 	 * 
 	 * @param program the root node of the parse tree
 	 */
-	public CheckMagicNumbers(Program program) {
-		super(program);
+	public CheckMagicNumbers(Program program, String path) {
+		super(program, path);
 	}
 
 	/*
@@ -55,6 +55,24 @@ public class CheckMagicNumbers extends CritterCheck {
         catch( Exception e ) {
             return false;
         }
+    }
+    
+    /*
+     * Determines if a node corresponds to a magic number in the original student file.
+     */
+    private boolean isRealMagicNumber(Traversable t, String num) {
+    	int firstLineNum = getBeginningLineNumber(t);
+    	int lastLineNum = getLineNumber(t);
+    	int numLines = lastLineNum - firstLineNum + 1;
+    	
+    	boolean containsNum = false;
+    	
+    	for (int i = 0; i < numLines; i++) {
+    		if(getLine(getFilename(t), firstLineNum+i).contains(num))
+    			containsNum = true;
+    	}
+    	
+    	return containsNum;
     }
 	
     @Override
@@ -73,10 +91,10 @@ public class CheckMagicNumbers extends CritterCheck {
     			String c = ((Case) t).getExpression().toString();
     			
     			if (isNumeric(c)) {
-    				reportErrorPos(t, "high priority: " +
-    						"%n   Use of magic number (%s), which should be given a meaningful name, " +
-    						"%n   or a #define, which should be replaced with an enum "
-    						+ "%n   (unless it's the result of a #define in a standard C header file)%n", c);
+    				if (isRealMagicNumber(t, c)) {
+	    				reportErrorPos(t, "high priority: " +
+	    						"%n   Use of magic number (%s), which should be given a meaningful name%n", c);
+    				}
     			}	
     		}
     		
@@ -85,11 +103,11 @@ public class CheckMagicNumbers extends CritterCheck {
     			if (!t.getParent().toString().startsWith("__")) {
     				if (number.getValue() != 0 && number.getValue() != 1 
     						&& number.getValue() != 2) {
-    					reportErrorPos(t, "high priority: " +
-        						"%n   Use of magic number (%s), which should be given a meaningful name, " +
-        						"%n   or a #define, which should be replaced with an enum "
-        						+ "%n   (unless it's the result of a #define in a standard C header file)%n", 
-        						t.toString());
+    					if (isRealMagicNumber(t, t.toString())) {
+	    					reportErrorPos(t, "high priority: " +
+	        						"%n   Use of magic number (%s), which should be given a meaningful name%n", 
+	        						t.toString());
+    					}
     				}	
     			}
     		}
@@ -99,11 +117,11 @@ public class CheckMagicNumbers extends CritterCheck {
     			if (!t.getParent().toString().startsWith("__")) {
     				if (number.getValue() != 0 && number.getValue() != 1 
     						&& number.getValue() != 2) {
-    					reportErrorPos(t, "high priority: " +
-        						"%n   Use of magic number (%s), which should be given a meaningful name, " +
-        						"%n   or a #define, which should be replaced with an enum "
-        						+ "%n   (unless it's the result of a #define in a standard C header file)%n", 
-        						t.toString());
+    					if (isRealMagicNumber(t, t.toString())) {
+	    					reportErrorPos(t, "high priority: " +
+	        						"%n   Use of magic number (%s), which should be given a meaningful name%n", 
+	        						t.toString());
+    					}
     				}	
     			}
     		}
