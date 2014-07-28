@@ -71,7 +71,6 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	   			// main function doesn't need to be checked for parameter
 	   			// or return mentions in comment
 	   			else if (function.getName().toString().compareTo("main") != 0) {
-	   				
 	   				PreAnnotation comment = prevComments[0]; // gives location for all comments
 		    				
 	    			// Checks if the function's comment refers to parameters.
@@ -95,7 +94,6 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	   								+ "\n   your comment does not refer to '%s'\n", paramName);
 	   					}
 	    			}
-	    				
 	    			// Checks for explicitly stated return, only 
 	   				// for non-void function.
 	    			if (!stringList.contains("void")) {

@@ -89,8 +89,8 @@ public class Critter {
         };
         
         // Checking is done here
-        for (CritterCheck check : checks)
+        for (CritterCheck check : checks) {
         	check.check();
-        
+        }
     }
 }
