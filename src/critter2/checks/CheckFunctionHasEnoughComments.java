@@ -1,9 +1,9 @@
 package critter2.checks;
 
-import cetus.hir.AnnotationStatement;
 import cetus.hir.DepthFirstIterator;
 import cetus.hir.IfStatement;
 import cetus.hir.Loop;
+import cetus.hir.PreAnnotation;
 import cetus.hir.Procedure;
 import cetus.hir.Program;
 import cetus.hir.SwitchStatement;
@@ -74,7 +74,7 @@ public class CheckFunctionHasEnoughComments extends CritterCheck {
     				else if (functiont instanceof SwitchStatement)
     					countElements++;
     				
-    				else if (functiont instanceof AnnotationStatement) {
+    				else if (functiont instanceof PreAnnotation) {
     					if (!functiont.toString().startsWith("#pragma"))
     						countComments++;	
     				}
