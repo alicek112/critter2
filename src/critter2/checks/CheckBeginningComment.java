@@ -68,8 +68,14 @@ public class CheckBeginningComment extends CritterCheck {
     		if (t.toString().startsWith("#pragma critTer:startStudentInclude")) {
     			// If two lines in a row begin with #pragma, then the first line 
     	    	// of student code is either blank or a pragma.
-    			while (!(t.toString().startsWith("#pragma critTer:1:")))
-    	    		t = dfs.next();
+    			while (!(t.toString().startsWith("#pragma critTer:1:"))
+    					&& !(t.toString().startsWith("#pragma critTer:endStudentInclude"))) {
+    				t = dfs.next();
+    			}
+    			
+    			if (t.toString().startsWith("#pragma critTer:endStudentInclude"))
+    				break;
+    			
     			Traversable n = dfs.next();
     			if (n.toString().startsWith("#pragma critTer")) {
     				reportErrorPos(n, "high priority: " +

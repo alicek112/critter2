@@ -62,15 +62,15 @@ def main():
 
 	# Validate command-line arguments
     if len(sys.argv) == 1:
-        print "No arguments given!"
+        print >> sys.stderr, "No arguments given!"
         sys.exit(1)
     for arg in sys.argv[1:]:
         if not os.path.exists(arg):
-            print arg + ' does not exist.'
+            print >> sys.stderr, arg + ' does not exist.'
             sys.exit(1)
 
     # Start the string of command-line arguments to be passed to cetus.
-    argsPrefix = '-preprocessor="gcc217 -E -C -dD" -path="' + os.getcwd() + '/" '
+    argsPrefix = '-preprocessor="gcc -E -C -dD" -path="' + os.getcwd() + '/" '
 
     # If TEMP_DIR doesn't exist, then create it.
     if not os.path.exists(TEMP_DIR):
@@ -97,8 +97,8 @@ def main():
     # directory), and (2) write its critique to stdout.
     for arg in sys.argv[1:]:
         args = argsPrefix + TEMP_DIR + '/' + arg
-        print
-        print 'Checking ' + arg
+        print >> sys.stderr
+        print >> sys.stderr, 'Checking ' + arg
         call('java -cp "' + CPATH + '" critter2.Critter ' + args,
             shell=True)
 	
