@@ -70,7 +70,8 @@ def main():
             sys.exit(1)
 
     # Start the string of command-line arguments to be passed to cetus.
-    argsPrefix = '-preprocessor="gcc -E -C -dD" -path="' + os.getcwd() + '/" '
+    argsPrefix = '-preprocessor="gcc217 -E -C -dD" -path="' + \
+        os.getcwd() + '/" '
 
     # If TEMP_DIR doesn't exist, then create it.
     if not os.path.exists(TEMP_DIR):
