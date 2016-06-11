@@ -12,7 +12,7 @@ typedef int* __WAIT_STATUS;
 #pragma critTer:6:../test/resources/include3.h:
 /* This function comment describes what the function returns and that the parameter is x. */
 #pragma critTer:7:../test/resources/include3.h:
-int helloWorld(int x);
+int helloWorld(const char * x);
 #pragma critTer:8:../test/resources/include3.h:
 
 #pragma critTer:9:../test/resources/include3.h:

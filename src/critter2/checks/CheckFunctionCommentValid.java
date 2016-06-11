@@ -6,6 +6,7 @@ import java.util.List;
 import critter2.CritterCheck;
 import cetus.hir.Declaration;
 import cetus.hir.DepthFirstIterator;
+import cetus.hir.IDExpression;
 import cetus.hir.PreAnnotation;
 import cetus.hir.Procedure;
 import cetus.hir.ProcedureDeclarator;
@@ -137,9 +138,8 @@ public class CheckFunctionCommentValid extends CritterCheck {
 			    				"\n   A static function definition should have a comment\n");		
 		    		}
 		   			
-		   			// main function doesn't need to be checked for parameter
-		   			// or return mentions in comment
-		   			else if (function.getName().toString().compareTo("main") != 0) {
+		   			
+		   			else {
 		   				PreAnnotation comment = prevComments[0]; // gives location for all comments
 			    				
 		    			// Checks if the function's comment refers to parameters.
@@ -192,8 +192,8 @@ public class CheckFunctionCommentValid extends CritterCheck {
     				for (int i = 0; i < declaredFunctions.size(); i++) {
     					String currName = declaredFunctions.get(i).getID().toString();
     					if (currName.equals(functionName)) {
-    						List<?> functionParams = function.getParameters();
-    						List<?> currParams = declaredFunctions.get(i).getParameters();
+    						List<Declaration> functionParams = function.getDeclarator().getParameters();
+    						List<Declaration> currParams = declaredFunctions.get(i).getParameters();
     						
     						if (functionParams.size() == currParams.size()) {
     						
@@ -202,11 +202,15 @@ public class CheckFunctionCommentValid extends CritterCheck {
 	    							if (!functionParams.get(j).toString().split(" ")[0].equals(currParams.get(j).toString().split(" ")[0])) {
 	    								break;
 	    							}
-	    							if (!functionParams.get(j).toString().equals(currParams.get(j).toString())) {
+	    						
+	    							String currParamName = currParams.get(j).getDeclaredIDs().get(0).toString();
+	    							String functionParamName = functionParams.get(j).getDeclaredIDs().get(0).toString();
+	    							
+	    							if (!currParamName.equals(functionParamName)) {
 	    								reportErrorPos(function, "low priority: " +
 	    			   							"\n   Parameter name \'%s\' in function definition differs "
 	    			   							+ "from parameter name \'%s\' in function declaration\n",
-	    			   							functionParams.get(j).toString(), currParams.get(j).toString());
+	    			   							functionParamName, currParamName);
 	    							}
 	    							
 	    						}

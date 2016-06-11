@@ -31,8 +31,8 @@ public class CheckFunctionCommentValidTest {
 		tr.assertErrorEquals(3,  "\n   ../test/resources/include3.h: line 12: high priority: \n   "
 				+ "A function declaration should have a comment\n");
 		tr.assertErrorEquals(4, "\n   hello.c: line 9: low priority: \n   "
-				+ "Parameter name 'int x' in function definition differs from parameter name "
-				+ "'int wrongName' in function declaration\n");
+				+ "Parameter name 'x' in function definition differs from parameter name "
+				+ "'wrongName' in function declaration\n");
 		
 	}
 }

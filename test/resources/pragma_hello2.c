@@ -9,7 +9,7 @@ typedef int* __WAIT_STATUS;
 #pragma critTer:2:hello.c:
 
 #pragma critTer:3:hello.c:
-int helloWorld(int x) {
+int helloWorld(const char x[]) {
 #pragma critTer:4:hello.c:
   char pcLine[1000];
 #pragma critTer:5:hello.c:
@@ -29,4 +29,12 @@ int foo2(int x, int a, int b) {
 #pragma critTer:10:hello.c:
    printf("Return.\n");
 #pragma critTer:11:hello.c:
+}
+#pragma critTer:12:hello.c:
+/* The main function has params argc and argv and returns 0. */
+#pragma critTer:13:hello.c:
+int main(int argc, char* argv[]) {
+#pragma critTer:14:hello.c:
+	return 0;
+#pragma critTer:15:hello.c:
 }

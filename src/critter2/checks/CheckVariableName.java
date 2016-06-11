@@ -31,7 +31,7 @@ public class CheckVariableName extends CritterCheck {
     	      "l", "pl", "l1", "l2", "ul", "al",
     	      "f", "pf", "f1", "f2", "af",
     	      "d", "pd", "d1", "d2", "ad",
-    	      "pv",
+    	      "pv", "u", "u1", "u2",
     	      "o", "po", "ao",
     	      "j", "k", "n", "m", "", 
     	   }; 
