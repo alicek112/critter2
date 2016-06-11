@@ -38,13 +38,13 @@ $ ./gradlew test
 To run CritTer2 on all c files in the working directory:
 
 ```bash
-$ critTer2 *.c
+$ critTer *.c
 ```
 
 To run CritTer2 on a specific file:
 
 ```bash
-$ critTer2 filename.c
+$ critTer filename.c
 ```
 
 There is no need to include any header files in the call to CritTer2, simply
